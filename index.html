@@ -3,29 +3,29 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>アルバイト時間記録 v2 決定ボタン版</title>
+<title>student-work-tracker-v003</title>
 <style>
-:root{--bg:#f8f5ef;--card:#fffdfa;--ink:#2f2a25;--muted:#776d62;--line:#e1d7c8;--accent:#e98a3a;--ok:#1f8a4c;--warn:#c98500;--bad:#c84032}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif;font-size:16px}.app{max-width:900px;margin:auto;padding:12px 12px 86px}header{position:sticky;top:0;z-index:10;background:linear-gradient(var(--bg) 88%,rgba(248,245,239,0));padding:10px 0 14px}h1{font-size:20px;margin:4px 0 8px}h2{font-size:17px;margin:0 0 8px}.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px;margin:10px 0;box-shadow:0 1px 2px rgba(0,0,0,.04)}.bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.month{font-size:18px;font-weight:800;min-width:145px;text-align:center}.btn{border:0;border-radius:12px;background:var(--accent);color:#fff;font-weight:800;padding:11px 14px;font-size:15px}.btn.secondary{background:#6b6259}.btn.light{background:#eee4d6;color:var(--ink)}.btn.bad{background:var(--bad)}label{display:block;font-size:13px;color:var(--muted);margin-bottom:4px}input,select{width:100%;padding:10px;border:1px solid var(--line);border-radius:10px;background:white;font-size:16px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.small{font-size:12px;color:var(--muted)}.notice{background:#fff3d8;border:1px solid #e2bf73;border-radius:12px;padding:10px;margin:8px 0}.jobBox{border:1px solid var(--line);border-radius:14px;padding:10px;margin-top:8px;background:#fff}.jobTitle{font-weight:800;margin-bottom:8px}.day{scroll-margin-top:95px}.dayTop{display:flex;justify-content:space-between;gap:10px;align-items:center}.dateTitle{font-size:18px;font-weight:900}.summary{font-weight:900}.ok{color:var(--ok)}.warn{color:var(--warn)}.badText{color:var(--bad)}.work{border-top:1px dashed var(--line);padding-top:10px;margin-top:10px}.workTitle{font-weight:800;margin-bottom:8px}.row{display:grid;grid-template-columns:70px 1fr 1fr 86px;gap:8px;align-items:end}.tools{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.footer{position:fixed;bottom:0;left:0;right:0;background:#fffdfa;border-top:1px solid var(--line);padding:8px;display:flex;gap:8px;justify-content:center;z-index:20}.footer .btn{flex:1;max-width:180px}.modal{position:fixed;inset:0;background:rgba(0,0,0,.35);display:none;align-items:flex-end;z-index:30}.panel{background:#fffdfa;border-radius:18px 18px 0 0;padding:16px;width:100%;max-height:88vh;overflow:auto}.hidden{display:none}.table{width:100%;border-collapse:collapse;font-size:12px}.table th,.table td{border:1px solid #bbb;padding:4px;text-align:left}@media (min-width:720px){.panel{max-width:760px;margin:auto;border-radius:18px}.modal{align-items:center}.row{grid-template-columns:90px 1fr 1fr 110px}.app{padding-bottom:30px}.footer{position:sticky}}@media print{body{background:white}.app,.footer,.modal{display:none!important}#printArea{display:block!important;font-size:11px}.table th,.table td{padding:3px}}
+:root{--bg:#f8f5ef;--card:#fffdfa;--ink:#2f2a25;--muted:#776d62;--line:#e1d7c8;--accent:#e98a3a;--accent2:#6b6259;--ok:#1f8a4c;--warn:#c98500;--bad:#c84032}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif;font-size:16px}.app{max-width:920px;margin:auto;padding:12px 12px 90px}header{position:sticky;top:0;z-index:10;background:linear-gradient(var(--bg) 88%,rgba(248,245,239,0));padding:10px 0 14px}h1{font-size:20px;margin:4px 0 8px}h2{font-size:17px;margin:0 0 8px}.ver{font-size:12px;color:var(--muted);font-weight:700}.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px;margin:10px 0;box-shadow:0 1px 2px rgba(0,0,0,.04)}.bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.month{font-size:18px;font-weight:800;min-width:145px;text-align:center}.btn{border:0;border-radius:12px;background:var(--accent);color:#fff;font-weight:800;padding:11px 14px;font-size:15px;cursor:pointer}.btn.secondary{background:var(--accent2)}.btn.light{background:#eee4d6;color:var(--ink)}.btn:active{transform:translateY(1px)}label{display:block;font-size:13px;color:var(--muted);margin-bottom:4px}input,select{width:100%;padding:10px;border:1px solid var(--line);border-radius:10px;background:white;font-size:16px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.small{font-size:12px;color:var(--muted)}.notice{background:#fff3d8;border:1px solid #e2bf73;border-radius:12px;padding:10px;margin:8px 0}.jobBox{border:1px solid var(--line);border-radius:14px;padding:10px;margin-top:8px;background:#fff}.jobTitle{font-weight:800;margin-bottom:8px}.day{scroll-margin-top:96px}.dayTop{display:flex;justify-content:space-between;gap:10px;align-items:center}.dateTitle{font-size:18px;font-weight:900}.summary{font-weight:900}.ok{color:var(--ok)}.warn{color:var(--warn)}.badText{color:var(--bad)}.work{border-top:1px dashed var(--line);padding-top:10px;margin-top:10px}.workTitle{font-weight:800;margin-bottom:8px}.workGrid{display:grid;grid-template-columns:72px 1fr 1fr;gap:8px;align-items:end}.workGrid2{display:grid;grid-template-columns:1fr 1fr 92px;gap:8px;align-items:end;margin-top:8px}.timeBox{padding:10px;border:1px solid var(--line);border-radius:10px;background:#f5efe6;text-align:center;font-weight:900}.tools{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.footer{position:fixed;bottom:0;left:0;right:0;background:#fffdfa;border-top:1px solid var(--line);padding:8px;display:flex;gap:8px;justify-content:center;z-index:20}.footer .btn{flex:1;max-width:180px}.modal{position:fixed;inset:0;background:rgba(0,0,0,.35);display:none;align-items:flex-end;z-index:30}.panel{background:#fffdfa;border-radius:18px 18px 0 0;padding:16px;width:100%;max-height:88vh;overflow:auto}.hidden{display:none}.table{width:100%;border-collapse:collapse;font-size:12px}.table th,.table td{border:1px solid #bbb;padding:4px;text-align:left}@media (min-width:720px){.panel{max-width:760px;margin:auto;border-radius:18px}.modal{align-items:center}.workGrid{grid-template-columns:90px 1fr 1fr 1fr 90px 110px}.workGrid2{display:contents}.app{padding-bottom:30px}.footer{position:sticky}}@media print{body{background:white}.app,.footer,.modal{display:none!important}#printArea{display:block!important;font-size:11px}.table th,.table td{padding:3px}}
 </style>
 </head>
 <body>
 <div class="app">
 <header>
-<h1>アルバイト時間記録 v2 決定ボタン版</h1>
+<h1>アルバイト時間記録 <span class="ver">v003</span></h1>
 <div class="bar"><button class="btn light" id="prevMonth">＜</button><div class="month" id="monthLabel"></div><button class="btn light" id="nextMonth">＞</button><button class="btn secondary" id="todayBtn">今日</button></div>
 </header>
 
 <section class="card">
 <h2>初回登録</h2>
-<div class="small">学生名・学籍番号・クラスは最初に1回だけ入力します。入力内容はこのスマホに自動保存されます。</div>
+<div class="small">学生名・学籍番号・クラスは最初に1回だけ入力します。この端末に自動保存されます。</div>
 <div class="grid" style="margin-top:8px"><div><label>学生名</label><input id="studentName" placeholder="例：山田 太郎"></div><div><label>学籍番号</label><input id="studentId" placeholder="例：A001"></div></div>
 <div class="grid" style="margin-top:10px"><div><label>クラス</label><input id="studentClass" placeholder="例：初級A"></div><div><label>基本上限（直近7日間）</label><input id="defaultLimit" type="number" step="0.5" value="28"></div></div>
 </section>
 
 <section class="card">
 <h2>アルバイト情報（最大3件）</h2>
-<div class="notice small">ここでアルバイト名と時給を入力します。時給は数字だけ入力してください。例：1100</div>
+<div class="notice small">アルバイト名と時給を入力します。時給は数字だけ入力してください。例：1100</div>
 <div id="jobs"></div>
 </section>
 
@@ -33,7 +33,8 @@
 <h2>一括設定</h2>
 <div class="grid"><div><label>期間開始</label><input id="bulkStart" type="date"></div><div><label>期間終了</label><input id="bulkEnd" type="date"></div></div>
 <div class="grid" style="margin-top:10px"><div><label>期間の上限</label><input id="bulkLimit" type="number" step="0.5" placeholder="例：40"></div><div style="display:flex;align-items:end"><button class="btn secondary" id="applyLimit">期間上限を設定</button></div></div>
-<div class="tools"><button class="btn light" id="bulkNone">期間を全部なし</button><button class="btn light" id="copyPrevWeek">表示中の週を先週と同じにする</button></div>
+<div class="tools"><button class="btn light" id="bulkNone">選択した期間を全部なし</button><button class="btn light" id="copyPrevWeek">表示中の週を先週と同じにする</button></div>
+<div class="small" style="margin-top:8px">「全部なし」は、有無=なし・休み時間=0・時間=0として保存します。</div>
 </section>
 
 <div id="days"></div>
@@ -49,25 +50,29 @@
 <div id="printArea" class="hidden"></div>
 
 <script>
-const KEY='student-work-tracker-stable-v1';
+const VERSION='v003';
+const KEY='student-work-tracker-v003';
+const OLD_KEYS=['student-work-tracker-stable-v1','arbeit-tracker-v3'];
 const jpWeek=['日','月','火','水','木','金','土'];
 const initial={student:{name:'',id:'',className:''},defaultLimit:28,jobs:[{name:'',wage:''},{name:'',wage:''},{name:'',wage:''}],days:{},limits:{},currentMonth:ym(new Date()),lastDate:iso(new Date())};
-let state=load()||initial;
+let state=loadState();
 
 function iso(d){return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10)}
 function ym(d){return iso(new Date(d.getFullYear(),d.getMonth(),1)).slice(0,7)}
 function parseDate(s){const [y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d)}
 function addDays(d,n){const x=new Date(d);x.setDate(x.getDate()+n);return x}
 function monthDates(ymstr){const [y,m]=ymstr.split('-').map(Number);const out=[];let d=new Date(y,m-1,1);while(d.getMonth()===m-1){out.push(iso(d));d.setDate(d.getDate()+1)}return out}
-function load(){try{return JSON.parse(localStorage.getItem(KEY))}catch(e){return null}}
+function loadState(){try{const v=localStorage.getItem(KEY);if(v)return normalize(JSON.parse(v));for(const k of OLD_KEYS){const old=localStorage.getItem(k);if(old)return normalize(JSON.parse(old));}}catch(e){}return structuredClone(initial)}
+function normalize(s){s=s||structuredClone(initial);s.student=s.student||{name:'',id:'',className:''};s.jobs=s.jobs||structuredClone(initial.jobs);while(s.jobs.length<3)s.jobs.push({name:'',wage:''});s.days=s.days||{};s.limits=s.limits||{};s.defaultLimit=Number(s.defaultLimit)||28;s.currentMonth=s.currentMonth||ym(new Date());s.lastDate=s.lastDate||iso(new Date());Object.values(s.days).forEach(day=>{day.works=day.works||[];while(day.works.length<3)day.works.push({on:false,start:'',end:'',breakMin:0});day.works.forEach(w=>{if(w.breakMin==null)w.breakMin=0;if(w.hours==null)w.hours=w.on?calcHours(w.start,w.end,w.breakMin):0;});});return s}
 function save(){localStorage.setItem(KEY,JSON.stringify(state))}
 function esc(s){return String(s??'').replace(/[&<>\"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c]||c))}
-function ensureDay(ds){if(!state.days[ds])state.days[ds]={works:[{on:false,start:'',end:''},{on:false,start:'',end:''},{on:false,start:'',end:''}]};return state.days[ds]}
-function calcHours(start,end){if(!start||!end)return 0;const [sh,sm]=start.split(':').map(Number),[eh,em]=end.split(':').map(Number);let a=sh*60+sm,b=eh*60+em;if(b<a)b+=24*60;return Math.max(0,(b-a)/60)}
-function dayHours(ds){return ensureDay(ds).works.reduce((sum,w)=>sum+(w.on?calcHours(w.start,w.end):0),0)}
+function ensureDay(ds){if(!state.days[ds])state.days[ds]={works:[{on:false,start:'',end:'',breakMin:0,hours:0},{on:false,start:'',end:'',breakMin:0,hours:0},{on:false,start:'',end:'',breakMin:0,hours:0}]};return state.days[ds]}
+function calcHours(start,end,breakMin=0){if(!start||!end)return 0;const [sh,sm]=start.split(':').map(Number),[eh,em]=end.split(':').map(Number);let a=sh*60+sm,b=eh*60+em;if(b<a)b+=24*60;return Math.max(0,(b-a-(Number(breakMin)||0))/60)}
+function dayHours(ds){return ensureDay(ds).works.reduce((sum,w)=>sum+(w.on?Number(w.hours||0):0),0)}
 function sevenHours(ds){let d=parseDate(ds),sum=0;for(let i=6;i>=0;i--)sum+=dayHours(iso(addDays(d,-i)));return sum}
 function limit(ds){return Number(state.limits[ds]??state.defaultLimit??28)}
 function statusClass(sum,lim){if(sum>lim)return 'badText';if(sum>=lim*0.9)return 'warn';return 'ok'}
+function workTempHours(row){const on=row.querySelector('[data-temp-on]').value==='1';if(!on)return 0;const start=row.querySelector('[data-temp-start]').value;const end=row.querySelector('[data-temp-end]').value;const br=Number(row.querySelector('[data-temp-break]').value)||0;return calcHours(start,end,br)}
 
 function updateStateFromInputs(){
  state.student.name=document.getElementById('studentName').value;
@@ -103,35 +108,44 @@ function renderDays(){
   const d=parseDate(ds), sum7=sevenHours(ds), lim=limit(ds), cls=statusClass(sum7,lim), data=ensureDay(ds);
   const card=document.createElement('section');card.className='card day';card.id='day-'+ds;
   let html='<div class="dayTop"><div><div class="dateTitle">'+(d.getMonth()+1)+'月'+d.getDate()+'日（'+jpWeek[d.getDay()]+'）</div><div class="small">直近7日間：<b class="'+cls+'">'+sum7.toFixed(1)+'時間 / 上限'+lim+'時間</b></div></div><div class="summary">今日 '+dayHours(ds).toFixed(1)+'h</div></div>';
-  html+='<div class="grid" style="margin-top:10px"><div><label>この日の上限</label><input type="number" step="0.5" data-limit="'+ds+'" value="'+lim+'"></div><div style="display:flex;align-items:end"><button class="btn light" data-week-none="'+ds+'">この週 全部なし</button></div></div>';
+  html+='<div style="margin-top:10px"><label>この日の上限</label><input type="number" step="0.5" data-limit="'+ds+'" value="'+lim+'"></div>';
   for(let i=0;i<3;i++){
-   const w=data.works[i];const j=state.jobs[i]||{};const h=w.on?calcHours(w.start,w.end):0;const pay=Math.round(h*(Number(j.wage)||0));
-   html+='<div class="work"><div class="workTitle">'+(i+1)+'. '+(esc(j.name)||'アルバイト'+(i+1))+'</div><div class="row"><div><label>有無</label><select data-temp-on="'+ds+','+i+'"><option value="0" '+(!w.on?'selected':'')+'>なし</option><option value="1" '+(w.on?'selected':'')+'>あり</option></select></div><div><label>開始</label><input type="time" data-temp-start="'+ds+','+i+'" value="'+(w.start||'')+'"></div><div><label>終了</label><input type="time" data-temp-end="'+ds+','+i+'" value="'+(w.end||'')+'"></div><div><button class="btn secondary" data-confirm-work="'+ds+','+i+'">決定</button></div></div><div class="small">確定済み：勤務時間 '+h.toFixed(1)+'時間　給与見込み '+pay.toLocaleString()+'円</div><div class="small">※時刻を選んだだけでは保存されません。「決定」を押すと反映されます。</div></div>';
+   const w=data.works[i];const j=state.jobs[i]||{};const h=w.on?Number(w.hours||0):0;const pay=Math.round(h*(Number(j.wage)||0));
+   html+='<div class="work"><div class="workTitle">'+(i+1)+'. '+(esc(j.name)||'アルバイト'+(i+1))+'</div>'+
+   '<div class="workGrid workRow">'+
+   '<div><label>有無</label><select data-temp-on="'+ds+','+i+'"><option value="0" '+(!w.on?'selected':'')+'>なし</option><option value="1" '+(w.on?'selected':'')+'>あり</option></select></div>'+
+   '<div><label>開始</label><input type="time" data-temp-start="'+ds+','+i+'" value="'+(w.start||'')+'"></div>'+
+   '<div><label>終了</label><input type="time" data-temp-end="'+ds+','+i+'" value="'+(w.end||'')+'"></div>'+
+   '<div class="workGrid2"><div><label>休み時間（分）</label><input type="number" min="0" step="5" data-temp-break="'+ds+','+i+'" value="'+(w.breakMin||0)+'"></div>'+
+   '<div><label>時間</label><div class="timeBox" data-temp-hours="'+ds+','+i+'">'+h.toFixed(1)+'</div></div>'+
+   '<div><button class="btn secondary" data-confirm-work="'+ds+','+i+'">決定</button></div></div>'+
+   '</div><div class="small">確定済み：勤務時間 '+h.toFixed(1)+'時間　給与見込み '+pay.toLocaleString()+'円</div><div class="small">※開始・終了・休み時間を入れただけでは反映されません。「決定」を押すと保存します。</div></div>';
   }
   card.innerHTML=html;box.appendChild(card);
  });
 }
 function weekRange(ds){let d=parseDate(ds);let start=addDays(d,-((d.getDay()+6)%7));return [iso(start),iso(addDays(start,6))]}
-function setNone(ds){const day=ensureDay(ds);day.works.forEach(w=>{w.on=false;w.start='';w.end=''})}
-function rows(a,b){const out=[];for(let d=parseDate(a);iso(d)<=b;d=addDays(d,1)){const ds=iso(d);for(let i=0;i<3;i++){const w=ensureDay(ds).works[i],j=state.jobs[i]||{},h=w.on?calcHours(w.start,w.end):0;out.push({date:ds,week:jpWeek[d.getDay()],no:i+1,name:j.name||'',on:w.on?'あり':'なし',start:w.start||'',end:w.end||'',hours:h,wage:j.wage||'',pay:Math.round(h*(Number(j.wage)||0)),sum7:sevenHours(ds),limit:limit(ds),over:sevenHours(ds)>limit(ds)?'超過':'OK'});}}return out}
+function setNone(ds){const day=ensureDay(ds);day.works.forEach(w=>{w.on=false;w.start='';w.end='';w.breakMin=0;w.hours=0})}
+function rows(a,b){const out=[];for(let d=parseDate(a);iso(d)<=b;d=addDays(d,1)){const ds=iso(d);for(let i=0;i<3;i++){const w=ensureDay(ds).works[i],j=state.jobs[i]||{},h=w.on?Number(w.hours||0):0;out.push({date:ds,week:jpWeek[d.getDay()],no:i+1,name:j.name||'',on:w.on?'あり':'なし',start:w.start||'',end:w.end||'',breakMin:w.breakMin||0,hours:h,wage:j.wage||'',pay:Math.round(h*(Number(j.wage)||0)),sum7:sevenHours(ds),limit:limit(ds),over:sevenHours(ds)>limit(ds)?'超過':'OK'});}}return out}
 function csvQuote(v){v=String(v??'');return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v}
 function download(data,name,type){const blob=new Blob([data],{type:type+';charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;a.click();URL.revokeObjectURL(url)}
+function updateVisibleTempHours(row){const box=row.querySelector('[data-temp-hours]');if(box)box.textContent=workTempHours(row).toFixed(1)}
 
-document.addEventListener('input',e=>{const t=e.target;if(t.matches('#studentName,#studentId,#studentClass,#defaultLimit,[data-job-name],[data-job-wage]')){updateStateFromInputs();save();renderDays();}});
-document.addEventListener('change',e=>{const t=e.target;updateStateFromInputs();if(t.dataset.limit){state.limits[t.dataset.limit]=Number(t.value)||state.defaultLimit;state.lastDate=t.dataset.limit;save();renderDays();}});
-document.addEventListener('click',e=>{const t=e.target;if(t.dataset.weekNone){const [a,b]=weekRange(t.dataset.weekNone);for(let d=parseDate(a);iso(d)<=b;d=addDays(d,1))setNone(iso(d));state.lastDate=t.dataset.weekNone;save();renderDays();}if(t.dataset.confirmWork){const [ds,iRaw]=t.dataset.confirmWork.split(',');const i=Number(iRaw);const row=t.closest('.work');const on=row.querySelector('[data-temp-on]').value==='1';const start=row.querySelector('[data-temp-start]').value;const end=row.querySelector('[data-temp-end]').value;const w=ensureDay(ds).works[i];w.on=on;w.start=on?start:'';w.end=on?end:'';state.lastDate=ds;save();renderDays();}});
+document.addEventListener('input',e=>{const t=e.target;if(t.matches('#studentName,#studentId,#studentClass,#defaultLimit,[data-job-name],[data-job-wage]')){updateStateFromInputs();save();renderDays();} if(t.matches('[data-temp-start],[data-temp-end],[data-temp-break],[data-temp-on]')){const row=t.closest('.work');if(row)updateVisibleTempHours(row);}});
+document.addEventListener('change',e=>{const t=e.target;updateStateFromInputs();if(t.dataset.limit){state.limits[t.dataset.limit]=Number(t.value)||state.defaultLimit;state.lastDate=t.dataset.limit;save();renderDays();} if(t.matches('[data-temp-start],[data-temp-end],[data-temp-break],[data-temp-on]')){const row=t.closest('.work');if(row)updateVisibleTempHours(row);}});
+document.addEventListener('click',e=>{const t=e.target;if(t.dataset.confirmWork){const [ds,iRaw]=t.dataset.confirmWork.split(',');const i=Number(iRaw);const row=t.closest('.work');const on=row.querySelector('[data-temp-on]').value==='1';const start=row.querySelector('[data-temp-start]').value;const end=row.querySelector('[data-temp-end]').value;const br=Number(row.querySelector('[data-temp-break]').value)||0;if(on && (!start||!end)){alert('開始と終了を入力してください。');return;}const w=ensureDay(ds).works[i];w.on=on;w.start=on?start:'';w.end=on?end:'';w.breakMin=on?br:0;w.hours=on?calcHours(start,end,br):0;state.lastDate=ds;save();renderDays();}});
 document.getElementById('prevMonth').onclick=()=>{updateStateFromInputs();const [y,m]=state.currentMonth.split('-').map(Number);state.currentMonth=ym(new Date(y,m-2,1));save();render()};
 document.getElementById('nextMonth').onclick=()=>{updateStateFromInputs();const [y,m]=state.currentMonth.split('-').map(Number);state.currentMonth=ym(new Date(y,m,1));save();render()};
 document.getElementById('todayBtn').onclick=()=>{state.currentMonth=ym(new Date());state.lastDate=iso(new Date());save();render()};
 document.getElementById('saveBtn').onclick=()=>{updateStateFromInputs();save();alert('保存しました')};
-document.getElementById('bulkNone').onclick=()=>{const a=document.getElementById('bulkStart').value,b=document.getElementById('bulkEnd').value;if(!a||!b)return alert('期間を選んでください');for(let d=parseDate(a);iso(d)<=b;d=addDays(d,1))setNone(iso(d));save();renderDays()};
-document.getElementById('applyLimit').onclick=()=>{const a=document.getElementById('bulkStart').value,b=document.getElementById('bulkEnd').value,v=Number(document.getElementById('bulkLimit').value);if(!a||!b||!v)return alert('期間と上限を入力してください');for(let d=parseDate(a);iso(d)<=b;d=addDays(d,1))state.limits[iso(d)]=v;save();renderDays()};
-document.getElementById('copyPrevWeek').onclick=()=>{const base=state.lastDate||iso(new Date()),[a,b]=weekRange(base);for(let d=parseDate(a);iso(d)<=b;d=addDays(d,1)){state.days[iso(d)]=JSON.parse(JSON.stringify(ensureDay(iso(addDays(d,-7)))))}save();renderDays()};
+document.getElementById('bulkNone').onclick=()=>{const a=document.getElementById('bulkStart').value,b=document.getElementById('bulkEnd').value;if(!a||!b)return alert('期間を選んでください');if(parseDate(a)>parseDate(b))return alert('終了日は開始日以降にしてください');if(!confirm(a+' 〜 '+b+' を全部「なし」にします。よろしいですか？'))return;for(let d=parseDate(a);iso(d)<=b;d=addDays(d,1))setNone(iso(d));state.lastDate=a;save();renderDays()};
+document.getElementById('applyLimit').onclick=()=>{const a=document.getElementById('bulkStart').value,b=document.getElementById('bulkEnd').value,v=Number(document.getElementById('bulkLimit').value);if(!a||!b||!v)return alert('期間と上限を入力してください');if(parseDate(a)>parseDate(b))return alert('終了日は開始日以降にしてください');for(let d=parseDate(a);iso(d)<=b;d=addDays(d,1))state.limits[iso(d)]=v;state.lastDate=a;save();renderDays()};
+document.getElementById('copyPrevWeek').onclick=()=>{const base=state.lastDate||iso(new Date()),[a,b]=weekRange(base);if(!confirm(a+' 〜 '+b+' に、先週の内容をコピーします。よろしいですか？'))return;for(let d=parseDate(a);iso(d)<=b;d=addDays(d,1)){state.days[iso(d)]=JSON.parse(JSON.stringify(ensureDay(iso(addDays(d,-7)))))}save();renderDays()};
 document.getElementById('exportBtn').onclick=()=>{const dates=monthDates(state.currentMonth);document.getElementById('exportStart').value=dates[0];document.getElementById('exportEnd').value=dates[dates.length-1];document.getElementById('exportModal').style.display='flex'};
 document.getElementById('closeExport').onclick=()=>document.getElementById('exportModal').style.display='none';
-document.getElementById('csvBtn').onclick=()=>{const a=document.getElementById('exportStart').value,b=document.getElementById('exportEnd').value;if(!a||!b)return;let csv='日付,曜日,番号,アルバイト名,ありなし,開始,終了,労働時間,時給,給与見込み,直近7日間合計,上限,判定\n';rows(a,b).forEach(r=>{csv+=[r.date,r.week,r.no,r.name,r.on,r.start,r.end,r.hours.toFixed(1),r.wage,r.pay,r.sum7.toFixed(1),r.limit,r.over].map(csvQuote).join(',')+'\n'});download(csv,'arbeit_'+a+'_'+b+'.csv','text/csv')};
-document.getElementById('pdfBtn').onclick=()=>{const a=document.getElementById('exportStart').value,b=document.getElementById('exportEnd').value;if(!a||!b)return;let html='<h2>アルバイト時間記録 '+a+'〜'+b+'</h2><p>氏名：'+esc(state.student.name)+'　学籍番号：'+esc(state.student.id)+'　クラス：'+esc(state.student.className)+'</p><table class="table"><thead><tr><th>日付</th><th>曜</th><th>番号</th><th>アルバイト名</th><th>有無</th><th>開始</th><th>終了</th><th>時間</th><th>7日間</th><th>上限</th><th>判定</th></tr></thead><tbody>';rows(a,b).forEach(r=>{html+='<tr><td>'+r.date+'</td><td>'+r.week+'</td><td>'+r.no+'</td><td>'+esc(r.name)+'</td><td>'+r.on+'</td><td>'+r.start+'</td><td>'+r.end+'</td><td>'+r.hours.toFixed(1)+'</td><td>'+r.sum7.toFixed(1)+'</td><td>'+r.limit+'</td><td>'+r.over+'</td></tr>'});html+='</tbody></table>';const p=document.getElementById('printArea');p.innerHTML=html;p.className='';window.print();p.className='hidden'};
-render();
+document.getElementById('csvBtn').onclick=()=>{const a=document.getElementById('exportStart').value,b=document.getElementById('exportEnd').value;if(!a||!b)return;let csv='日付,曜日,番号,アルバイト名,ありなし,開始,終了,休み時間分,労働時間,時給,給与見込み,直近7日間合計,上限,判定\n';rows(a,b).forEach(r=>{csv+=[r.date,r.week,r.no,r.name,r.on,r.start,r.end,r.breakMin,r.hours.toFixed(1),r.wage,r.pay,r.sum7.toFixed(1),r.limit,r.over].map(csvQuote).join(',')+'\n'});download(csv,'arbeit_'+a+'_'+b+'_'+VERSION+'.csv','text/csv')};
+document.getElementById('pdfBtn').onclick=()=>{const a=document.getElementById('exportStart').value,b=document.getElementById('exportEnd').value;if(!a||!b)return;let html='<h2>アルバイト時間記録 '+VERSION+' '+a+'〜'+b+'</h2><p>氏名：'+esc(state.student.name)+'　学籍番号：'+esc(state.student.id)+'　クラス：'+esc(state.student.className)+'</p><table class="table"><thead><tr><th>日付</th><th>曜</th><th>番号</th><th>アルバイト名</th><th>有無</th><th>開始</th><th>終了</th><th>休み分</th><th>時間</th><th>7日間</th><th>上限</th><th>判定</th></tr></thead><tbody>';rows(a,b).forEach(r=>{html+='<tr><td>'+r.date+'</td><td>'+r.week+'</td><td>'+r.no+'</td><td>'+esc(r.name)+'</td><td>'+r.on+'</td><td>'+r.start+'</td><td>'+r.end+'</td><td>'+r.breakMin+'</td><td>'+r.hours.toFixed(1)+'</td><td>'+r.sum7.toFixed(1)+'</td><td>'+r.limit+'</td><td>'+r.over+'</td></tr>'});html+='</tbody></table>';const p=document.getElementById('printArea');p.innerHTML=html;p.className='';window.print();p.className='hidden'};
+render();save();
 </script>
 </body>
 </html>
