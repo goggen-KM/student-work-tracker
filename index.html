@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>student-work-tracker-v010</title>
+<title>student-work-tracker-v011</title>
 <style>
 :root{--bg:#f8f5ef;--card:#fffdfa;--ink:#2f2a25;--muted:#776d62;--line:#e1d7c8;--accent:#e98a3a;--ok:#1f8a4c;--warn:#c98500;--bad:#c84032;--blue:#2d6cdf}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif;font-size:16px}.app{max-width:980px;margin:auto;padding:12px 12px 90px}header{position:sticky;top:0;z-index:10;background:linear-gradient(var(--bg) 88%,rgba(248,245,239,0));padding:10px 0 14px}h1{font-size:20px;margin:4px 0 8px}h2{font-size:17px;margin:0 0 8px}.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px;margin:10px 0;box-shadow:0 1px 2px rgba(0,0,0,.04)}.bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.month{font-size:18px;font-weight:800;min-width:145px;text-align:center}.btn{border:0;border-radius:12px;background:var(--accent);color:#fff;font-weight:800;padding:11px 14px;font-size:15px}.btn.secondary{background:#6b6259}.btn.light{background:#eee4d6;color:var(--ink)}.btn.bad{background:var(--bad)}label{display:block;font-size:13px;color:var(--muted);margin-bottom:4px}input,select,textarea{width:100%;padding:10px;border:1px solid var(--line);border-radius:10px;background:white;font-size:16px}textarea{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;min-height:240px;white-space:pre}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.small{font-size:12px;color:var(--muted)}.notice{background:#fff3d8;border:1px solid #e2bf73;border-radius:12px;padding:10px;margin:8px 0}.jobBox{border:1px solid var(--line);border-radius:14px;padding:10px;margin-top:8px;background:#fff}.jobTitle{font-weight:800;margin-bottom:8px}.day{scroll-margin-top:95px}.dayTop{display:flex;justify-content:space-between;gap:10px;align-items:center}.dateTitle{font-size:18px;font-weight:900}.summary{font-weight:900}.ok{color:var(--ok)}.warn{color:var(--warn)}.badText{color:var(--bad)}.blue{color:var(--blue)}.work{border-top:1px dashed var(--line);padding-top:10px;margin-top:10px}.workTitle{font-weight:800;margin-bottom:8px}.stateBadge{display:inline-block;border-radius:999px;padding:2px 8px;font-size:12px;font-weight:800;background:#eee4d6;color:var(--muted)}.state-none{background:#e8f5ee;color:var(--ok)}.state-work{background:#eaf0ff;color:var(--blue)}.state-blank{background:#f1eee8;color:var(--muted)}.workGrid{display:grid;grid-template-columns:1fr;gap:8px;align-items:end}.timeRow{display:grid;grid-template-columns:1fr 1fr;gap:8px}.subRow{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:8px;align-items:end}.timeResult{font-size:22px;font-weight:900;border:1px solid var(--line);border-radius:10px;background:#fff;padding:9px 10px;min-height:43px}.tools{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.footer{position:fixed;bottom:0;left:0;right:0;background:#fffdfa;border-top:1px solid var(--line);padding:8px;display:flex;gap:8px;justify-content:center;z-index:20}.footer .btn{flex:1;max-width:180px}.modal{position:fixed;inset:0;background:rgba(0,0,0,.35);display:none;align-items:flex-end;z-index:30}.panel{background:#fffdfa;border-radius:18px 18px 0 0;padding:16px;width:100%;max-height:88vh;overflow:auto}.hidden{display:none}.table{width:100%;border-collapse:collapse;font-size:12px}.table th,.table td{border:1px solid #bbb;padding:4px;text-align:left}.csvStatus{font-weight:800;margin-top:8px}.csvBox{display:none;margin-top:10px}.limitTag{font-size:12px;color:var(--muted)}
@@ -14,8 +14,8 @@
 <body>
 <div class="app">
 <header>
-<h1>アルバイト時間記録 v010</h1>
-<div class="small">GitHub上の limits.csv を自動読込します。CSV出力は画面表示・コピー・保存に対応しています。</div>
+<h1>アルバイト時間記録 v011</h1>
+<div class="small">GitHub上の limits.csv を自動読込します。CSV出力は画面表示・コピー・共有・保存に対応しています。</div>
 <div class="bar"><button class="btn light" id="prevMonth">＜</button><div class="month" id="monthLabel"></div><button class="btn light" id="nextMonth">＞</button><button class="btn secondary" id="todayBtn">今日</button></div>
 </header>
 <section class="card"><h2>初回登録</h2><div class="small">学生名・学籍番号・クラスは最初に1回だけ入力します。</div><div class="grid" style="margin-top:8px"><div><label>学生名</label><input id="studentName" placeholder="例：山田 太郎"></div><div><label>学籍番号</label><input id="studentId" placeholder="例：A001"></div></div><div class="grid" style="margin-top:10px"><div><label>クラス</label><input id="studentClass" placeholder="例：初級A"></div><div><label>基本上限（直近7日間）</label><input id="defaultLimit" type="number" step="0.5" value="28"></div></div></section>
@@ -25,10 +25,10 @@
 <div id="days"></div>
 </div>
 <div class="footer"><button class="btn" id="exportBtn">出力</button><button class="btn secondary" id="saveBtn">保存</button></div>
-<div class="modal" id="exportModal"><div class="panel"><h2>出力</h2><div class="grid"><div><label>開始日</label><input id="exportStart" type="date"></div><div><label>終了日</label><input id="exportEnd" type="date"></div></div><div class="tools"><button class="btn" id="makeCsvBtn">CSVを作る</button><button class="btn secondary" id="pdfBtn">PDFを作る</button><button class="btn light" id="closeExport">閉じる</button></div><div class="csvStatus" id="csvStatus"></div><div class="csvBox" id="csvBox"><label>CSV内容</label><textarea id="csvText" readonly></textarea><div class="tools"><button class="btn" id="saveCsvBtn">CSVを保存</button><button class="btn secondary" id="copyCsvBtn">CSVをコピー</button></div><p class="small">iPhoneで保存できない場合は「CSVをコピー」を押して、メモやスプレッドシートに貼り付けてください。</p></div><p class="small">PDFはブラウザの印刷画面で「PDFとして保存」を選んでください。</p></div></div>
+<div class="modal" id="exportModal"><div class="panel"><h2>出力</h2><div class="grid"><div><label>開始日</label><input id="exportStart" type="date"></div><div><label>終了日</label><input id="exportEnd" type="date"></div></div><div class="tools"><button class="btn" id="makeCsvBtn">CSVを作る</button><button class="btn secondary" id="pdfBtn">PDFを作る</button><button class="btn light" id="closeExport">閉じる</button></div><div class="csvStatus" id="csvStatus"></div><div class="csvBox" id="csvBox"><label>CSV内容</label><textarea id="csvText" readonly></textarea><div class="tools"><button class="btn" id="shareCsvBtn">CSVを共有</button><button class="btn secondary" id="copyCsvBtn">CSVをコピー</button><button class="btn light" id="saveCsvBtn">CSVを保存</button></div><p class="small">iPhoneでは「CSVを共有」→「ファイルに保存」が最も確実です。共有できない場合は「CSVをコピー」を使ってください。</p></div><p class="small">PDFはブラウザの印刷画面で「PDFとして保存」を選んでください。</p></div></div>
 <div id="printArea" class="hidden"></div>
 <script>
-const VERSION='v010';
+const VERSION='v011';
 const KEY='student-work-tracker-v010';
 const jpWeek=['日','月','火','水','木','金','土'];
 const initial={student:{name:'',id:'',className:''},defaultLimit:28,jobs:[{name:'',wage:''},{name:'',wage:''},{name:'',wage:''}],days:{},limits:{},currentMonth:ym(new Date()),lastDate:iso(new Date()),limitSource:{message:'未読込'}};
@@ -81,7 +81,25 @@ document.getElementById('copyPrevWeek').onclick=()=>{const base=state.lastDate||
 document.getElementById('exportBtn').onclick=()=>{const dates=monthDates(state.currentMonth);document.getElementById('exportStart').value=dates[0];document.getElementById('exportEnd').value=dates[dates.length-1];document.getElementById('csvStatus').textContent='';document.getElementById('csvBox').style.display='none';document.getElementById('exportModal').style.display='flex'};
 document.getElementById('closeExport').onclick=()=>document.getElementById('exportModal').style.display='none';
 document.getElementById('makeCsvBtn').onclick=()=>{const a=document.getElementById('exportStart').value,b=document.getElementById('exportEnd').value;if(!a||!b)return;lastCsv=makeCsv(a,b);lastCsvFileName='arbeit_'+VERSION+'_'+a+'_'+b+'.csv';document.getElementById('csvText').value=lastCsv;document.getElementById('csvBox').style.display='block';document.getElementById('csvStatus').textContent='CSVを作成しました。下に内容を表示しています。必要なら「CSVを保存」または「CSVをコピー」を押してください。'};
-document.getElementById('saveCsvBtn').onclick=()=>{if(!lastCsv)return alert('先にCSVを作ってください');download(lastCsv,lastCsvFileName,'text/csv');alert('CSVを保存する処理を実行しました。ファイルアプリの「ダウンロード」フォルダを確認してください。保存されない場合は「CSVをコピー」を使ってください。')};
+document.getElementById('shareCsvBtn').onclick=async()=>{
+ if(!lastCsv)return alert('先にCSVを作ってください');
+ try{
+  const file=new File([lastCsv],lastCsvFileName,{type:'text/csv'});
+  if(navigator.canShare && navigator.canShare({files:[file]})){
+    await navigator.share({files:[file],title:lastCsvFileName,text:'アルバイト時間記録CSV'});
+    alert('共有画面を開きました。「ファイルに保存」などを選んで保存してください。');
+  }else if(navigator.share){
+    await navigator.share({title:lastCsvFileName,text:lastCsv});
+    alert('CSV内容を共有しました。');
+  }else{
+    await copyText(lastCsv);
+    alert('この端末では共有機能が使えないため、CSVをコピーしました。');
+  }
+ }catch(err){
+  alert('共有できませんでした。CSV内容は画面に表示されています。「CSVをコピー」を使ってください。');
+ }
+};
+document.getElementById('saveCsvBtn').onclick=()=>{if(!lastCsv)return alert('先にCSVを作ってください');download(lastCsv,lastCsvFileName,'text/csv');alert('CSVを保存する処理を実行しました。保存されない場合は「CSVを共有」→「ファイルに保存」を使ってください。')};
 document.getElementById('copyCsvBtn').onclick=async()=>{if(!lastCsv)return alert('先にCSVを作ってください');try{await copyText(lastCsv);alert('CSVをコピーしました。')}catch(err){alert('コピーに失敗しました。画面のCSV内容を選択してコピーしてください。')}};
 document.getElementById('pdfBtn').onclick=()=>{const a=document.getElementById('exportStart').value,b=document.getElementById('exportEnd').value;if(!a||!b)return;let html='<h2>アルバイト時間記録 '+VERSION+' '+a+'〜'+b+'</h2><p>氏名：'+esc(state.student.name)+'　学籍番号：'+esc(state.student.id)+'　クラス：'+esc(state.student.className)+'</p><table class="table"><thead><tr><th>日付</th><th>曜</th><th>番号</th><th>アルバイト名</th><th>ありなし</th><th>開始</th><th>終了</th><th>休み</th><th>時間</th><th>7日間</th><th>上限</th><th>判定</th></tr></thead><tbody>';rows(a,b).forEach(r=>{html+='<tr><td>'+r.date+'</td><td>'+r.week+'</td><td>'+r.no+'</td><td>'+esc(r.name)+'</td><td>'+r.statusJa+'</td><td>'+r.start+'</td><td>'+r.end+'</td><td>'+r.breakMin+'</td><td>'+(r.status==='work'?r.hours.toFixed(1):'')+'</td><td>'+r.sum7.toFixed(1)+'</td><td>'+r.limit+'</td><td>'+r.over+'</td></tr>'});html+='</tbody></table>';const p=document.getElementById('printArea');p.innerHTML=html;p.className='';window.print();p.className='hidden'};
 document.getElementById('reloadLimits').onclick=()=>loadLimitsCsv();
