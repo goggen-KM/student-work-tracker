@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>student-work-tracker-v033</title>
+<title>student-work-tracker-v034</title>
 <script src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.bundle.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 <style>
@@ -14,21 +14,21 @@
 <body>
 <div class="app">
 <header>
-<h1>アルバイト時間記録 v033</h1>
+<h1>アルバイト時間記録 v034</h1>
 <div class="small">週表示（日曜〜土曜）。Excel共有・3週間PDF共有・limits.csv対応。v032ではExcelを常に全データ出力にします。PDFは表示週＋前2週間です。</div>
 <div class="bar"><button class="btn light" id="prevWeek">＜ 前週</button><div class="weekLabel" id="weekLabel"></div><button class="btn light" id="nextWeek">次週 ＞</button><button class="btn secondary" id="todayBtn">今週</button></div>
 </header>
 <details class="card" id="studentDetails"><summary><span class="summaryRow">学生情報</span></summary><div class="collapseBody"><div class="small">学生名・学籍番号・クラスは最初に1回だけ入力します。</div><div class="grid" style="margin-top:8px"><div><label>学生名</label><input id="studentName" placeholder="例：山田 太郎"></div><div><label>学籍番号</label><input id="studentId" placeholder="例：A001"></div></div><div style="margin-top:10px"><label>クラス</label><input id="studentClass" placeholder="例：初級A"></div></div></details>
 <details class="card" id="jobDetails"><summary><span class="summaryRow" id="jobSummary">アルバイト管理（最大20件）</span></summary><div class="collapseBody"><div class="small">アルバイト名と勤務期間を登録します。終了日が空欄の場合は「現在も勤務中」として扱います。</div><div id="jobSettings"></div></div></details>
-<details class="card" id="toolDetails"><summary><span class="summaryRow">ツール</span></summary><div class="collapseBody"><div class="grid"><div><label>期間開始</label><input id="bulkStart" type="date"></div><div><label>期間終了</label><input id="bulkEnd" type="date"></div></div><div class="tools"><button class="btn light" id="blankToNone">選択期間の未入力だけを「なし」にする</button><button class="btn light" id="copyPrevWeek">表示中の週を先週と同じにする</button></div><div class="small">※「未入力だけをなし」は、すでに「あり」で決定した記録を消しません。</div><hr style="border:0;border-top:1px solid var(--line);margin:12px 0"><div class="small">開発・テスト用。最終版では削除します。</div><div class="tools"><button class="btn light" id="sampleDataBtn">サンプルデータを作成</button><button class="btn bad" id="resetDataBtn">データを初期化</button></div></div></details>
+<details class="card" id="toolDetails"><summary><span class="summaryRow">ツール</span></summary><div class="collapseBody"><div class="grid"><div><label>期間開始</label><input id="bulkStart" type="date"></div><div><label>期間終了</label><input id="bulkEnd" type="date"></div></div><div class="tools"><button class="btn light" id="blankToNone">選択期間の未入力だけを「なし」にする</button><button class="btn light" id="copyPrevWeek">表示中の週を先週と同じにする</button></div><div class="small">※「未入力だけをなし」は、すでに「あり」で決定した記録を消しません。</div><hr style="border:0;border-top:1px solid var(--line);margin:12px 0"><div class="small">データ引継ぎ用：過去に出力した勤務記録Excelを読み込んで、このスマホのデータに統合します。過去データに入力があるものを「未入力」で上書きしません。</div><div class="tools"><button class="btn light" id="importExcelBtn">勤務記録Excelを読み込む</button><input id="importExcelInput" type="file" accept=".xlsx,.xls" style="display:none"></div><div class="statusLine" id="importStatus">読み込み：未実行</div><hr style="border:0;border-top:1px solid var(--line);margin:12px 0"><div class="small">開発・テスト用。最終版では削除します。</div><div class="tools"><button class="btn light" id="sampleDataBtn">サンプルデータを作成</button><button class="btn bad" id="resetDataBtn">データを初期化</button></div></div></details>
 <details class="card" id="limitDetails"><summary><span class="summaryRow">日別上限CSV</span></summary><div class="collapseBody"><div class="small">管理者が GitHub に <b>limits.csv</b> を置くと、アプリ起動時に自動で読み込みます。</div><div class="tools"><button class="btn light" id="reloadLimits">limits.csv を再読込</button></div><div class="statusLine" id="limitStatus">日別上限CSV：未読込</div></div></details>
 <div id="days"></div>
 </div>
 <div class="footer"><button class="btn" id="shareExcelBtn">Excelを共有</button><button class="btn secondary" id="sharePdfBtn">直近3週間PDFを共有</button><button class="btn light" id="saveBtn">保存</button></div>
 <script>
-const VERSION='v033';
-const KEY='student-work-tracker-v033';
-const OLD_KEYS=['student-work-tracker-v032','student-work-tracker-v031','student-work-tracker-v030','student-work-tracker-v029','student-work-tracker-v028','student-work-tracker-v027','student-work-tracker-v026','student-work-tracker-v025','student-work-tracker-v024','student-work-tracker-v023','student-work-tracker-v022','student-work-tracker-v021','student-work-tracker-v020','student-work-tracker-v019','student-work-tracker-v018'];
+const VERSION='v034';
+const KEY='student-work-tracker-v034';
+const OLD_KEYS=['student-work-tracker-v033','student-work-tracker-v032','student-work-tracker-v031','student-work-tracker-v030','student-work-tracker-v029','student-work-tracker-v028','student-work-tracker-v027','student-work-tracker-v026','student-work-tracker-v025','student-work-tracker-v024','student-work-tracker-v023','student-work-tracker-v022','student-work-tracker-v021','student-work-tracker-v020','student-work-tracker-v019','student-work-tracker-v018'];
 const jpWeek=['日','月','火','水','木','金','土'];
 function iso(d){return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10)}
 function parseDate(s){const [y,m,d]=String(s).split('-').map(Number);return new Date(y,m-1,d)}
@@ -139,6 +139,135 @@ async function shareBlob(blob,filename,title){
 }
 async function shareExcel(){try{updateStateFromInputs();save();const[a,b]=allDataRange();const wb=buildWorkbook(a,b);const arr=XLSX.write(wb,{bookType:'xlsx',type:'array'});const blob=new Blob([arr],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});await shareBlob(blob,fileNameBase(a,b)+'.xlsx','アルバイト時間記録Excel')}catch(e){alert('Excel作成に失敗しました：'+e.message)}}
 async function sharePdf(){try{updateStateFromInputs();save();if(!window.jspdf||!window.jspdf.jsPDF)throw new Error('PDF作成ライブラリを読み込めませんでした。');const[a,b]=threeWeekRange();const{jsPDF}=window.jspdf;const doc=new jsPDF({orientation:'landscape',unit:'mm',format:'a4'});doc.setFont('helvetica');doc.setFontSize(12);doc.text(`Arbeit record ${VERSION}  ${a} - ${b}`,10,10);doc.setFontSize(9);doc.text(`Student: ${state.student.name||''}  ID: ${state.student.id||''}  Class: ${state.student.className||''}`,10,16);const rs=rows(a,b);let y=24;const headers=['Date','Job','Status','Start','End','Break','Hours','7days','Limit','Judge'];const widths=[25,48,16,17,17,17,17,20,16,18];function pageHeader(){let x=8;doc.setFillColor(220,220,220);doc.rect(8,y,276,6,'F');headers.forEach((h,i)=>{doc.text(String(h),x+1,y+4);x+=widths[i]});y+=6}function row(vals,fill){if(y>190){doc.addPage();y=12;pageHeader()}let x=8;doc.setFillColor(fill[0],fill[1],fill[2]);doc.rect(8,y,276,6,'F');doc.setTextColor(0,0,0);vals.forEach((v,i)=>{let t=String(v??'');if(i===1&&t.length>18)t=t.slice(0,18);doc.text(t,x+1,y+4);x+=widths[i]});y+=6}pageHeader();rs.forEach(r=>{const fill=r.judge==='超過'?[255,199,206]:(r.judge==='注意'?[255,235,156]:[255,255,255]);row([r.date,r.name,r.statusJa,r.start,r.end,r.breakMin,r.status==='work'?r.hours.toFixed(1):(r.status==='none'?'0':''),r.sum7.toFixed(1),r.limit,r.judge],fill)});const blob=doc.output('blob');await shareBlob(blob,fileNameBase(a,b)+'_3weeks.pdf','アルバイト時間記録PDF')}catch(e){alert('PDF作成に失敗しました：'+e.message)}}
+
+function excelDateToIso(v){
+  if(v instanceof Date && !isNaN(v))return iso(v);
+  if(typeof v==='number' && window.XLSX && XLSX.SSF){const d=XLSX.SSF.parse_date_code(v);if(d)return `${d.y}-${String(d.m).padStart(2,'0')}-${String(d.d).padStart(2,'0')}`}
+  const t=String(v??'').trim();
+  if(!t)return '';
+  const n=normalizeDate(t); if(n)return n;
+  const m=t.match(/^(\d{4})[\/.\-](\d{1,2})[\/.\-](\d{1,2})/); if(m)return `${m[1]}-${String(Number(m[2])).padStart(2,'0')}-${String(Number(m[3])).padStart(2,'0')}`;
+  return '';
+}
+function sheetRows(wb,name){const ws=wb.Sheets[name];return ws?XLSX.utils.sheet_to_json(ws,{header:1,defval:'',raw:false}):[]}
+function findHeaderRow(rows,need){
+  for(let r=0;r<Math.min(rows.length,20);r++){
+    const vals=rows[r].map(x=>String(x).trim());
+    if(need.every(n=>vals.includes(n)))return r;
+  }
+  return -1;
+}
+function colMap(row){const m={};row.forEach((v,i)=>{const k=String(v).trim();if(k)m[k]=i});return m}
+function nonEmpty(v){return String(v??'').trim()!==''}
+function findOrCreateJobByName(name){
+  name=String(name||'').trim();
+  if(!name)return null;
+  for(let i=0;i<state.jobs.length;i++)if(String(state.jobs[i]?.name||'').trim()===name)return i;
+  for(let i=0;i<state.jobs.length;i++)if(!hasJob(state.jobs[i])){state.jobs[i].name=name;return i;}
+  return null;
+}
+function mergeImportedJob(idx,info,counter){
+  if(idx===null||idx===undefined||idx<0||idx>=20)return;
+  const j=state.jobs[idx]||(state.jobs[idx]={name:'',content:'',startDate:'',endDate:''});
+  ['name','content','startDate','endDate'].forEach(k=>{if(nonEmpty(info[k]) && String(j[k]||'')!==String(info[k])){j[k]=info[k];counter.jobs++}});
+}
+function parseImportedStatus(v){
+  const s=String(v??'').trim();
+  if(!s||s==='未入力')return 'blank';
+  if(s==='あり'||s==='勤務'||s==='work')return 'work';
+  if(s==='なし'||s==='none')return 'none';
+  return 'blank';
+}
+async function importExcelFile(file){
+  const status=document.getElementById('importStatus');
+  try{
+    if(!file)return;
+    if(!window.XLSX)throw new Error('Excel読み込みライブラリを読み込めませんでした。');
+    status.textContent='読み込み中...';
+    const buf=await file.arrayBuffer();
+    const wb=XLSX.read(buf,{type:'array',cellDates:true});
+    const counter={student:0,jobs:0,workAdded:0,noneAdded:0,skippedBlank:0,conflicts:0};
+
+    // 学生情報
+    const meta=sheetRows(wb,'学生情報');
+    if(meta.length){
+      meta.forEach(row=>{const key=String(row[0]??'').trim(), val=String(row[1]??'').trim();
+        if(!val)return;
+        if(key==='氏名' && !state.student.name){state.student.name=val;counter.student++}
+        if(key==='学籍番号' && !state.student.id){state.student.id=val;counter.student++}
+        if(key==='クラス' && !state.student.className){state.student.className=val;counter.student++}
+      });
+    }
+
+    // アルバイト情報
+    const jobRows=sheetRows(wb,'アルバイト情報');
+    const jh=findHeaderRow(jobRows,['アルバイト番号','アルバイト名']);
+    if(jh>=0){
+      const cm=colMap(jobRows[jh]);
+      for(let r=jh+1;r<jobRows.length;r++){
+        const row=jobRows[r];
+        const no=Number(row[cm['アルバイト番号']]);
+        const idx=Number.isFinite(no)&&no>0?no-1:findOrCreateJobByName(row[cm['アルバイト名']]);
+        mergeImportedJob(idx,{name:row[cm['アルバイト名']]||'',content:row[cm['アルバイト内容']]||'',startDate:excelDateToIso(row[cm['勤務開始日']]),endDate:excelDateToIso(row[cm['勤務終了日']])},counter);
+      }
+    }
+
+    // 勤務記録
+    let rows2=sheetRows(wb,'勤務記録');
+    let wh=findHeaderRow(rows2,['日付','アルバイト名','労働時間']);
+    if(wh<0){
+      for(const name of wb.SheetNames){
+        const cand=sheetRows(wb,name); const h=findHeaderRow(cand,['日付','アルバイト名','労働時間']);
+        if(h>=0){rows2=cand; wh=h; break;}
+      }
+    }
+    if(wh<0)throw new Error('勤務記録Excelの見出し行を認識できません。日付・アルバイト名・労働時間の列が必要です。');
+    const cm=colMap(rows2[wh]);
+    for(let r=wh+1;r<rows2.length;r++){
+      const row=rows2[r];
+      const ds=excelDateToIso(row[cm['日付']]);
+      if(!ds)continue;
+      const st=parseImportedStatus(row[cm['状態']]);
+      if(st==='blank'){counter.skippedBlank++;continue;} // 未入力では上書きしない
+      let jobIdx=null;
+      if(cm['アルバイト番号']!==undefined){const no=Number(row[cm['アルバイト番号']]); if(Number.isFinite(no)&&no>0)jobIdx=no-1;}
+      if(jobIdx===null||jobIdx<0||jobIdx>=20)jobIdx=findOrCreateJobByName(row[cm['アルバイト名']]);
+      if(jobIdx===null||jobIdx===undefined)continue;
+      mergeImportedJob(jobIdx,{name:row[cm['アルバイト名']]||'',content:row[cm['アルバイト内容']]||'',startDate:'',endDate:''},counter);
+      const w=getWorkForJob(ds,jobIdx);
+      if(st==='none'){
+        if(w.status==='blank'){
+          w.status='none';w.start='';w.end='';w.breakMin=0;w.hours=null;counter.noneAdded++;
+        }else{
+          // 既存のあり/なしは維持
+          counter.conflicts++;
+        }
+        continue;
+      }
+      if(st==='work'){
+        const start=String(row[cm['開始']]??'').trim();
+        const end=String(row[cm['終了']]??'').trim();
+        const breakMin=Number(row[cm['休み時間分']]??row[cm['休み時間']]??0)||0;
+        let h=Number(row[cm['労働時間']]);
+        if(!Number.isFinite(h))h=calcHours(start,end,breakMin);
+        if(w.status==='work' && (w.start!==start || w.end!==end || Number(w.breakMin||0)!==breakMin || Math.abs(Number(w.hours||0)-Number(h||0))>0.01)){
+          counter.conflicts++; continue;
+        }
+        w.status='work';w.jobIndex=jobIdx;w.start=start;w.end=end;w.breakMin=breakMin;w.hours=Number.isFinite(h)?h:calcHours(start,end,breakMin);counter.workAdded++;
+      }
+    }
+    save();render();
+    status.textContent=`読み込み完了：あり ${counter.workAdded}件、なし ${counter.noneAdded}件、未入力スキップ ${counter.skippedBlank}件、衝突保持 ${counter.conflicts}件`;
+    alert(status.textContent);
+  }catch(e){
+    console.error(e);
+    status.textContent='読み込み失敗：'+e.message;
+    alert(status.textContent);
+  }finally{
+    const input=document.getElementById('importExcelInput'); if(input)input.value='';
+  }
+}
+
 function createSampleData(){
 if(!confirm('現在の入力データをサンプルデータで上書きします。よろしいですか？'))return;
 state=JSON.parse(JSON.stringify(initial));
@@ -149,6 +278,8 @@ state.jobs[0]={name:'セブンイレブン',content:'コンビニ店員',startDa
 state.jobs[1]={name:'ローソン',content:'レジ・品出し',startDate:'2026-06-01',endDate:''};
 state.jobs[2]={name:'工場',content:'食品製造補助',startDate:'2026-06-10',endDate:''};
 state.jobs[3]={name:'期間限定バイト',content:'イベント補助',startDate:'2026-07-01',endDate:'2026-07-20'};
+state.jobs[4]={name:'カフェ',content:'ホール・接客',startDate:'2026-06-01',endDate:''};
+state.jobs[5]={name:'清掃会社',content:'清掃補助',startDate:'2026-06-05',endDate:''};
 // limits.csvが読めない環境でも超過検証できるよう、サンプルでは一部上限を設定
 ['2026-06-12','2026-06-13','2026-06-14','2026-06-15','2026-06-16','2026-06-17','2026-06-18','2026-06-19'].forEach(d=>state.limits[d]=28);
 const samples=[
@@ -164,6 +295,8 @@ const samples=[
   ['2026-06-14',2,'07:30','19:35',0],
   ['2026-06-20',1,'15:31','22:37',0],
   ['2026-06-21',1,'16:31','20:31',0],
+  ['2026-06-16',4,'09:00','13:00',0],
+  ['2026-06-18',5,'18:00','21:00',0],
   // 7月：期間限定バイトを含む
   ['2026-07-02',3,'09:00','12:00',0],
   ['2026-07-03',1,'23:00','04:00',60],
@@ -175,7 +308,7 @@ samples.forEach(([ds,jobIndex,start,end,breakMin])=>{
 });
 // 表示週の未入力をなしにする（勤務済みは保持）
 for(let d=parseDate(state.currentWeekStart);iso(d)<=weekEndFromStart(state.currentWeekStart);d=addDays(d,1))setBlankToNone(iso(d));
-save();render();alert('複数月・超過ありのサンプルデータを作成しました。');
+save();render();alert('複数月・超過あり・同一期間に4件以上のアルバイトが有効なサンプルデータを作成しました。');
 }
 function resetAllData(){if(!confirm('本当にすべての入力データを削除しますか？'))return;if(!confirm('学生情報・アルバイト情報・勤務記録がすべて削除されます。よろしいですか？'))return;localStorage.removeItem(KEY);state=JSON.parse(JSON.stringify(initial));render();alert('データを初期化しました。')}
 document.addEventListener('input',e=>{const t=e.target;if(t.matches('#studentName,#studentId,#studentClass,[data-job-name],[data-job-content],[data-job-start],[data-job-end]')){updateStateFromInputs();save();updateJobSummary();renderDays()}});
@@ -191,6 +324,8 @@ document.getElementById('reloadLimits').onclick=()=>loadLimitsCsv();
 document.getElementById('shareExcelBtn').onclick=()=>shareExcel();
 document.getElementById('sharePdfBtn').onclick=()=>sharePdf();
 document.getElementById('sampleDataBtn').onclick=()=>createSampleData();
+document.getElementById('importExcelBtn').onclick=()=>document.getElementById('importExcelInput').click();
+document.getElementById('importExcelInput').addEventListener('change',e=>importExcelFile(e.target.files[0]));
 document.getElementById('resetDataBtn').onclick=()=>resetAllData();
 render();setTimeout(loadLimitsCsv,300);
 </script>
