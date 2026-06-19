@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>student-work-tracker-v036</title>
+<title>student-work-tracker-v037</title>
 <script src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.bundle.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 <style>
@@ -14,8 +14,8 @@
 <body>
 <div class="app">
 <header>
-<h1>アルバイト時間記録 v036</h1>
-<div class="small">週表示（日曜〜土曜）。Excel共有・3週間PDF共有・limits.csv対応。v032ではExcelを常に全データ出力にします。PDFは表示週＋前2週間です。</div>
+<h1>アルバイト時間記録 v037</h1>
+<div class="small">週表示（日曜〜土曜）。Excel共有・3週間PDF共有・limits.csv対応。v037ではiPad/Excelで文字化けしにくいよう、Excel出力に日本語フォント指定を入れています。Excelは常に全データ出力、PDFは表示週＋前2週間です。</div>
 <div class="bar"><button class="btn light" id="prevWeek">＜ 前週</button><div class="weekLabel" id="weekLabel"></div><button class="btn light" id="nextWeek">次週 ＞</button><button class="btn secondary" id="todayBtn">今週</button></div>
 </header>
 <details class="card" id="studentDetails"><summary><span class="summaryRow">学生情報</span></summary><div class="collapseBody"><div class="small">学生名・学籍番号・クラスは最初に1回だけ入力します。</div><div class="grid" style="margin-top:8px"><div><label>学生名</label><input id="studentName" placeholder="例：山田 太郎"></div><div><label>学籍番号</label><input id="studentId" placeholder="例：A001"></div></div><div style="margin-top:10px"><label>クラス</label><input id="studentClass" placeholder="例：初級A"></div></div></details>
@@ -27,7 +27,7 @@
 <div class="footer"><button class="btn" id="shareExcelBtn">Excelを共有</button><button class="btn secondary" id="sharePdfBtn">直近3週間PDFを共有</button><button class="btn light" id="saveBtn">保存</button></div>
 <script>
 const VERSION='v036';
-const KEY='student-work-tracker-v036';
+const KEY='student-work-tracker-v037';
 const OLD_KEYS=['student-work-tracker-v035','student-work-tracker-v034','student-work-tracker-v033','student-work-tracker-v032','student-work-tracker-v031','student-work-tracker-v030','student-work-tracker-v029','student-work-tracker-v028','student-work-tracker-v027','student-work-tracker-v026','student-work-tracker-v025','student-work-tracker-v024','student-work-tracker-v023','student-work-tracker-v022','student-work-tracker-v021','student-work-tracker-v020','student-work-tracker-v019','student-work-tracker-v018'];
 const jpWeek=['日','月','火','水','木','金','土'];
 function iso(d){return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10)}
@@ -81,6 +81,19 @@ function allDataRange(){
 }
 function threeWeekRange(){return[iso(addDays(parseDate(state.currentWeekStart),-14)),weekEndFromStart(state.currentWeekStart)]}
 function fileNameBase(a,b){return 'arbeit_'+VERSION+'_'+(state.student.id||'noid')+'_'+a+'_'+b}
+function applyJapaneseExcelStyle(ws){
+  // iPad / Numbers / Excel で日本語が文字化け・豆腐表示になりにくいよう、
+  // すべてのセルに日本語フォント候補を明示する。
+  Object.keys(ws).forEach(addr=>{
+    if(addr[0]==='!')return;
+    const cell=ws[addr];
+    if(!cell)return;
+    cell.s=cell.s||{};
+    const oldFont=cell.s.font||{};
+    cell.s.font={...oldFont,name:'Hiragino Sans',sz:oldFont.sz||11};
+    if(!cell.s.alignment)cell.s.alignment={vertical:'center'};
+  });
+}
 function buildWorkbook(a,b){
   if(!window.XLSX)throw new Error('Excel作成ライブラリを読み込めませんでした。');
   const wb=XLSX.utils.book_new();
@@ -89,6 +102,7 @@ function buildWorkbook(a,b){
   const meta=[['項目','値'],['氏名',state.student.name||''],['学籍番号',state.student.id||''],['クラス',state.student.className||''],['作成バージョン',VERSION],['出力開始日',a],['出力終了日',b],['作成日時',new Date().toLocaleString('ja-JP')]];
   const metaWs=XLSX.utils.aoa_to_sheet(meta);
   metaWs['!cols']=[{wch:18},{wch:28}];
+  applyJapaneseExcelStyle(metaWs);
   XLSX.utils.book_append_sheet(wb,metaWs,'学生情報');
 
   // アルバイト情報シート：アルバイト内容・期間を保持
@@ -96,6 +110,7 @@ function buildWorkbook(a,b){
   state.jobs.forEach((j,i)=>{if((j.name||'').trim()||(j.content||'').trim()||(j.startDate||'').trim()||(j.endDate||'').trim())jobData.push([i+1,j.name||'',j.content||'',j.startDate||'',j.endDate||'',j.closeDay||''])});
   const jobWs=XLSX.utils.aoa_to_sheet(jobData);
   jobWs['!cols']=[{wch:14},{wch:22},{wch:28},{wch:14},{wch:14},{wch:10}];
+  applyJapaneseExcelStyle(jobWs);
   XLSX.utils.book_append_sheet(wb,jobWs,'アルバイト情報');
 
   // 勤務記録シート
@@ -106,6 +121,7 @@ function buildWorkbook(a,b){
   const headerStyle={font:{bold:true,color:{rgb:'FFFFFF'}},fill:{fgColor:{rgb:'6B6259'}},alignment:{horizontal:'center'}};
   for(let c=0;c<data[0].length;c++){const cell=ws[XLSX.utils.encode_cell({r:0,c})];if(cell)cell.s=headerStyle}
   for(let r=1;r<data.length;r++){const j=data[r][12],fill=j==='超過'?'FFC7CE':(j==='注意'?'FFEB9C':'FFFFFF');for(let c=0;c<data[0].length;c++){const cell=ws[XLSX.utils.encode_cell({r,c})];if(cell)cell.s={fill:{fgColor:{rgb:fill}},border:{top:{style:'thin',color:{rgb:'DDDDDD'}},bottom:{style:'thin',color:{rgb:'DDDDDD'}},left:{style:'thin',color:{rgb:'DDDDDD'}},right:{style:'thin',color:{rgb:'DDDDDD'}}}}}}
+  applyJapaneseExcelStyle(ws);
   XLSX.utils.book_append_sheet(wb,ws,'勤務記録');
   return wb
 }
