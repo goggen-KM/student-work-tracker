@@ -3,9 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>student-work-tracker-v037</title>
+<title>student-work-tracker-v038</title>
 <script src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.bundle.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <style>
 :root{--bg:#f8f5ef;--card:#fffdfa;--ink:#2f2a25;--muted:#776d62;--line:#e1d7c8;--accent:#e98a3a;--ok:#1f8a4c;--warn:#c98500;--bad:#c84032;--blue:#2d6cdf}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif;font-size:16px}.app{max-width:980px;margin:auto;padding:12px 12px 92px}header{position:sticky;top:0;z-index:10;background:linear-gradient(var(--bg) 88%,rgba(248,245,239,0));padding:10px 0 14px}h1{font-size:20px;margin:4px 0 8px}h2{font-size:17px;margin:0 0 8px}.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px;margin:10px 0;box-shadow:0 1px 2px rgba(0,0,0,.04)}.bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.weekLabel{font-size:17px;font-weight:800;min-width:260px;text-align:center}.btn{border:0;border-radius:12px;background:var(--accent);color:#fff;font-weight:800;padding:11px 14px;font-size:15px}.btn.secondary{background:#6b6259}.btn.light{background:#eee4d6;color:var(--ink)}.btn.bad{background:var(--bad)}label{display:block;font-size:13px;color:var(--muted);margin-bottom:4px}input,select{width:100%;padding:10px;border:1px solid var(--line);border-radius:10px;background:white;font-size:16px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.small{font-size:12px;color:var(--muted)}.notice{background:#fff3d8;border:1px solid #e2bf73;border-radius:12px;padding:10px;margin:8px 0}.day{scroll-margin-top:110px}.dayTop{display:flex;justify-content:space-between;gap:10px;align-items:center}.dateTitle{font-size:18px;font-weight:900}.summary{font-weight:900}.ok{color:var(--ok)}.warn{color:var(--warn)}.badText{color:var(--bad)}.blue{color:var(--blue)}.work{border-top:1px dashed var(--line);padding-top:10px;margin-top:10px}.workTitle{display:flex;gap:8px;align-items:center;font-weight:800;margin-bottom:8px}.jobCard{border:1px solid var(--line);border-radius:14px;background:#fff;padding:10px;margin-top:10px}.jobCardTitle{font-size:16px;font-weight:900;margin-bottom:8px}.jobFields{display:grid;grid-template-columns:1fr 1fr;gap:10px}.jobFields .nameField{grid-column:1 / -1}.workInput{display:flex;flex-direction:column;gap:8px}.workRow{display:grid;gap:8px;align-items:end}.topRow{grid-template-columns:1fr 88px}.timeRow{grid-template-columns:1fr 1fr 130px}.confirmRow{grid-template-columns:1fr 130px}.confirmRow .btn{width:100%}.timeResult{font-size:20px;font-weight:900;border:1px solid var(--line);border-radius:10px;background:#fff;padding:9px 10px;min-height:43px;text-align:center}.jobNameBox{font-size:16px;text-align:left;white-space:normal;word-break:break-word}.stateBadge{display:inline-block;border-radius:999px;padding:2px 8px;font-size:12px;font-weight:800;background:#eee4d6;color:var(--muted)}.state-none{background:#e8f5ee;color:var(--ok)}.state-work{background:#eaf0ff;color:var(--blue)}.state-blank{background:#f1eee8;color:var(--muted)}.tools{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.footer{position:fixed;bottom:0;left:0;right:0;background:#fffdfa;border-top:1px solid var(--line);padding:8px;display:flex;gap:8px;justify-content:center;z-index:20}.footer .btn{flex:1;max-width:220px}.hidden{display:none}.statusLine{margin-top:8px;color:var(--muted);font-size:12px}summary{cursor:pointer;font-weight:900;font-size:17px;list-style:none}summary::-webkit-details-marker{display:none}.summaryRow{display:flex;align-items:center;justify-content:space-between;gap:8px}.summaryRow::before{content:"▶";font-size:14px;color:var(--muted)}details[open] .summaryRow::before{content:"▼"}.collapseBody{margin-top:10px}@media(max-width:760px){.jobFields{grid-template-columns:1fr}.topRow{grid-template-columns:1fr 88px}.timeRow{grid-template-columns:1fr 1fr 118px}.confirmRow{grid-template-columns:1fr 120px}.weekLabel{min-width:100%;order:3}.bar .btn{flex:1}.workTitle{flex-wrap:wrap}}@media print{body{background:white}.app,.footer{display:none!important}}
@@ -14,8 +15,8 @@
 <body>
 <div class="app">
 <header>
-<h1>アルバイト時間記録 v037</h1>
-<div class="small">週表示（日曜〜土曜）。Excel共有・3週間PDF共有・limits.csv対応。v037ではiPad/Excelで文字化けしにくいよう、Excel出力に日本語フォント指定を入れています。Excelは常に全データ出力、PDFは表示週＋前2週間です。</div>
+<h1>アルバイト時間記録 v038</h1>
+<div class="small">週表示（日曜〜土曜）。Excel共有・3週間PDF共有・limits.csv対応。v038ではPDFを画像PDF化しました。Excelは常に全データ出力、PDFは表示週＋前2週間を3ページに分けて出力します。</div>
 <div class="bar"><button class="btn light" id="prevWeek">＜ 前週</button><div class="weekLabel" id="weekLabel"></div><button class="btn light" id="nextWeek">次週 ＞</button><button class="btn secondary" id="todayBtn">今週</button></div>
 </header>
 <details class="card" id="studentDetails"><summary><span class="summaryRow">学生情報</span></summary><div class="collapseBody"><div class="small">学生名・学籍番号・クラスは最初に1回だけ入力します。</div><div class="grid" style="margin-top:8px"><div><label>学生名</label><input id="studentName" placeholder="例：山田 太郎"></div><div><label>学籍番号</label><input id="studentId" placeholder="例：A001"></div></div><div style="margin-top:10px"><label>クラス</label><input id="studentClass" placeholder="例：初級A"></div></div></details>
@@ -26,9 +27,9 @@
 </div>
 <div class="footer"><button class="btn" id="shareExcelBtn">Excelを共有</button><button class="btn secondary" id="sharePdfBtn">直近3週間PDFを共有</button><button class="btn light" id="saveBtn">保存</button></div>
 <script>
-const VERSION='v036';
-const KEY='student-work-tracker-v037';
-const OLD_KEYS=['student-work-tracker-v035','student-work-tracker-v034','student-work-tracker-v033','student-work-tracker-v032','student-work-tracker-v031','student-work-tracker-v030','student-work-tracker-v029','student-work-tracker-v028','student-work-tracker-v027','student-work-tracker-v026','student-work-tracker-v025','student-work-tracker-v024','student-work-tracker-v023','student-work-tracker-v022','student-work-tracker-v021','student-work-tracker-v020','student-work-tracker-v019','student-work-tracker-v018'];
+const VERSION='v038';
+const KEY='student-work-tracker-v038';
+const OLD_KEYS=['student-work-tracker-v037','student-work-tracker-v035','student-work-tracker-v034','student-work-tracker-v033','student-work-tracker-v032','student-work-tracker-v031','student-work-tracker-v030','student-work-tracker-v029','student-work-tracker-v028','student-work-tracker-v027','student-work-tracker-v026','student-work-tracker-v025','student-work-tracker-v024','student-work-tracker-v023','student-work-tracker-v022','student-work-tracker-v021','student-work-tracker-v020','student-work-tracker-v019','student-work-tracker-v018'];
 const jpWeek=['日','月','火','水','木','金','土'];
 function iso(d){return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10)}
 function parseDate(s){const [y,m,d]=String(s).split('-').map(Number);return new Date(y,m-1,d)}
@@ -171,7 +172,85 @@ function validateJobCloseDays(){
 }
 
 async function shareExcel(){try{updateStateFromInputs();if(!validateJobCloseDays())return;save();const[a,b]=allDataRange();const wb=buildWorkbook(a,b);const arr=XLSX.write(wb,{bookType:'xlsx',type:'array'});const blob=new Blob([arr],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});await shareBlob(blob,fileNameBase(a,b)+'.xlsx','アルバイト時間記録Excel')}catch(e){alert('Excel作成に失敗しました：'+e.message)}}
-async function sharePdf(){try{updateStateFromInputs();if(!validateJobCloseDays())return;save();if(!window.jspdf||!window.jspdf.jsPDF)throw new Error('PDF作成ライブラリを読み込めませんでした。');const[a,b]=threeWeekRange();const{jsPDF}=window.jspdf;const doc=new jsPDF({orientation:'landscape',unit:'mm',format:'a4'});doc.setFont('helvetica');doc.setFontSize(12);doc.text(`Arbeit record ${VERSION}  ${a} - ${b}`,10,10);doc.setFontSize(9);doc.text(`Student: ${state.student.name||''}  ID: ${state.student.id||''}  Class: ${state.student.className||''}`,10,16);const rs=rows(a,b);let y=24;const headers=['Date','Job','Status','Start','End','Break','Hours','7days','Limit','Judge'];const widths=[25,48,16,17,17,17,17,20,16,18];function pageHeader(){let x=8;doc.setFillColor(220,220,220);doc.rect(8,y,276,6,'F');headers.forEach((h,i)=>{doc.text(String(h),x+1,y+4);x+=widths[i]});y+=6}function row(vals,fill){if(y>190){doc.addPage();y=12;pageHeader()}let x=8;doc.setFillColor(fill[0],fill[1],fill[2]);doc.rect(8,y,276,6,'F');doc.setTextColor(0,0,0);vals.forEach((v,i)=>{let t=String(v??'');if(i===1&&t.length>18)t=t.slice(0,18);doc.text(t,x+1,y+4);x+=widths[i]});y+=6}pageHeader();rs.forEach(r=>{const fill=r.judge==='超過'?[255,199,206]:(r.judge==='注意'?[255,235,156]:[255,255,255]);row([r.date,r.name,r.statusJa,r.start,r.end,r.breakMin,r.status==='work'?r.hours.toFixed(1):(r.status==='none'?'0':''),r.sum7.toFixed(1),r.limit,r.judge],fill)});const blob=doc.output('blob');await shareBlob(blob,fileNameBase(a,b)+'_3weeks.pdf','アルバイト時間記録PDF')}catch(e){alert('PDF作成に失敗しました：'+e.message)}}
+function formatJpDate(ds){
+  const d=parseDate(ds);
+  return `${d.getFullYear()}/${d.getMonth()+1}/${d.getDate()}（${jpWeek[d.getDay()]}）`;
+}
+function safeFilePart(s){return String(s||'').replace(/[\\/:*?"<>|\s]+/g,'_').slice(0,40)||'noid'}
+function buildPdfWeekPageHtml(start,end,pageNo,totalPages){
+  const rs=rows(start,end);
+  const byDate={};
+  weekDates(start).forEach(ds=>byDate[ds]=[]);
+  rs.forEach(r=>{if(byDate[r.date])byDate[r.date].push(r)});
+  const created=new Date().toLocaleString('ja-JP');
+  let html=`<div class="pdfPage">
+    <div class="pdfHeader">
+      <div><b>アルバイト時間記録</b></div>
+      <div>氏名：${esc(state.student.name||'')}</div>
+      <div>学籍番号：${esc(state.student.id||'')}</div>
+      <div>対象週：${formatJpDate(start)} ～ ${formatJpDate(end)}</div>
+      <div>出力日時：${esc(created)}</div>
+    </div>
+    <table class="pdfTable"><thead><tr><th>日付</th><th>アルバイト名</th><th>状態</th><th>開始</th><th>終了</th><th>休み</th><th>時間</th><th>7日間</th><th>上限</th><th>判定</th></tr></thead><tbody>`;
+  Object.keys(byDate).forEach(ds=>{
+    const d=parseDate(ds);
+    const items=byDate[ds];
+    if(!items.length){
+      html+=`<tr><td>${d.getMonth()+1}/${d.getDate()}（${jpWeek[d.getDay()]}）</td><td colspan="9" class="pdfMuted">記録なし</td></tr>`;
+    }else{
+      items.forEach((r,idx)=>{
+        const cls=r.judge==='超過'?'pdfBad':(r.judge==='注意'?'pdfWarn':'');
+        html+=`<tr class="${cls}"><td>${idx===0?`${d.getMonth()+1}/${d.getDate()}（${jpWeek[d.getDay()]}）`:''}</td><td>${esc(r.name)}</td><td>${esc(r.statusJa)}</td><td>${esc(r.start)}</td><td>${esc(r.end)}</td><td>${r.breakMin??''}</td><td>${r.status==='work'?r.hours.toFixed(1):(r.status==='none'?'0':'')}</td><td>${r.sum7.toFixed(1)}</td><td>${r.limit}</td><td>${esc(r.judge)}</td></tr>`;
+      });
+    }
+  });
+  html+=`</tbody></table><div class="pdfFooter">${pageNo} / ${totalPages}</div></div>`;
+  return html;
+}
+async function sharePdf(){
+  try{
+    updateStateFromInputs();
+    if(!validateJobCloseDays())return;
+    save();
+    if(!window.jspdf||!window.jspdf.jsPDF)throw new Error('PDF作成ライブラリを読み込めませんでした。');
+    if(!window.html2canvas)throw new Error('画像PDF作成ライブラリを読み込めませんでした。');
+    const {jsPDF}=window.jspdf;
+    const doc=new jsPDF({orientation:'landscape',unit:'mm',format:'a4'});
+    const weekStarts=[state.currentWeekStart, iso(addDays(parseDate(state.currentWeekStart),-7)), iso(addDays(parseDate(state.currentWeekStart),-14))];
+    const host=document.createElement('div');
+    host.style.position='fixed';host.style.left='-10000px';host.style.top='0';host.style.width='1120px';host.style.background='#ffffff';host.style.zIndex='-1';
+    const style=document.createElement('style');
+    style.textContent=`
+      .pdfPage{width:1120px;min-height:794px;background:#fff;color:#222;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif;padding:28px;box-sizing:border-box;}
+      .pdfHeader{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:6px 18px;font-size:19px;margin-bottom:16px;align-items:center;}
+      .pdfHeader div:first-child{font-size:26px;grid-column:1 / -1;border-bottom:3px solid #555;padding-bottom:7px;margin-bottom:3px;}
+      .pdfTable{width:100%;border-collapse:collapse;font-size:17px;table-layout:fixed;}
+      .pdfTable th,.pdfTable td{border:1px solid #777;padding:7px 6px;vertical-align:middle;word-break:break-word;}
+      .pdfTable th{background:#e8e0d4;font-weight:800;text-align:center;}
+      .pdfTable th:nth-child(1){width:92px}.pdfTable th:nth-child(2){width:210px}.pdfTable th:nth-child(3){width:72px}.pdfTable th:nth-child(4),.pdfTable th:nth-child(5){width:72px}.pdfTable th:nth-child(6){width:64px}.pdfTable th:nth-child(7){width:64px}.pdfTable th:nth-child(8){width:78px}.pdfTable th:nth-child(9){width:58px}.pdfTable th:nth-child(10){width:70px}
+      .pdfBad td{background:#ffc7ce}.pdfWarn td{background:#ffeb9c}.pdfMuted{color:#777;background:#f7f7f7}.pdfFooter{text-align:center;margin-top:18px;font-size:16px;color:#555;}
+    `;
+    host.appendChild(style);
+    document.body.appendChild(host);
+    for(let i=0;i<weekStarts.length;i++){
+      const a=weekStarts[i], b=weekEndFromStart(a);
+      const wrap=document.createElement('div');
+      wrap.innerHTML=buildPdfWeekPageHtml(a,b,i+1,weekStarts.length);
+      host.appendChild(wrap);
+      const page=wrap.firstElementChild;
+      const canvas=await html2canvas(page,{scale:2,backgroundColor:'#ffffff',useCORS:true,logging:false});
+      const img=canvas.toDataURL('image/png');
+      if(i>0)doc.addPage('a4','landscape');
+      doc.addImage(img,'PNG',0,0,297,210,undefined,'FAST');
+      wrap.remove();
+    }
+    host.remove();
+    const [a,b]=threeWeekRange();
+    const filename=`${safeFilePart(state.student.id)}_${safeFilePart(state.student.name)}_勤務記録_${a}_${b}.pdf`;
+    const blob=doc.output('blob');
+    await shareBlob(blob,filename,'アルバイト時間記録PDF');
+  }catch(e){alert('PDF作成に失敗しました：'+e.message)}
+}
 
 function excelDateToIso(v){
   if(v instanceof Date && !isNaN(v))return iso(v);
