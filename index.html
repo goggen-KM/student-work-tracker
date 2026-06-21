@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>student-work-tracker-v044</title>
+<title>student-work-tracker-v045</title>
 <script src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.bundle.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
@@ -15,7 +15,7 @@
 <body>
 <div class="app">
 <header>
-<h1>アルバイト時間記録 v044</h1>
+<h1>アルバイト時間記録 v045</h1>
 <div class="small">週表示（日曜〜土曜）。Excel共有・3週間PDF共有・limits.csv対応。v042では、勤務先選択肢に「なし」を追加し、サンプルデータをランダム生成にしました。Excelは常に全データ出力、PDFは表示週＋前2週間を3ページに分けて出力します。</div>
 <div class="bar"><button class="btn light" id="prevWeek">＜ 前週</button><div class="weekLabel" id="weekLabel"></div><button class="btn light" id="nextWeek">次週 ＞</button><button class="btn secondary" id="todayBtn">今週</button></div>
 </header>
@@ -27,8 +27,8 @@
 </div>
 <div class="footer"><button class="btn" id="shareExcelBtn">Excelを共有</button><button class="btn secondary" id="sharePdfBtn">直近3週間PDFを共有</button><button class="btn light" id="saveBtn">保存</button></div>
 <script>
-const VERSION='v044';
-const KEY='student-work-tracker-v044';
+const VERSION='v045';
+const KEY='student-work-tracker-v045';
 const OLD_KEYS=['student-work-tracker-v043','student-work-tracker-v042','student-work-tracker-v041','student-work-tracker-v040','student-work-tracker-v039','student-work-tracker-v038','student-work-tracker-v037','student-work-tracker-v035','student-work-tracker-v034','student-work-tracker-v033','student-work-tracker-v032','student-work-tracker-v031','student-work-tracker-v030','student-work-tracker-v029','student-work-tracker-v028','student-work-tracker-v027','student-work-tracker-v026','student-work-tracker-v025','student-work-tracker-v024','student-work-tracker-v023','student-work-tracker-v022','student-work-tracker-v021','student-work-tracker-v020','student-work-tracker-v019','student-work-tracker-v018'];
 const jpWeek=['日','月','火','水','木','金','土'];
 function iso(d){return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10)}
@@ -426,13 +426,37 @@ state=JSON.parse(JSON.stringify(initial));
 const rnd=(min,max)=>Math.floor(Math.random()*(max-min+1))+min;
 const pick=a=>a[rnd(0,a.length-1)];
 function fmtTime(min){const h=Math.floor(min/60),m=min%60;return String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')}
-function makeShift(){
-  const startOptions=[8*60,9*60,10*60,12*60,15*60,16*60,17*60,18*60,22*60,23*60];
-  const start=pick(startOptions)+pick([0,0,0,15,30]);
-  const dur=pick([180,240,300,360,420,480,540]);
-  const br=dur>=360?pick([30,45,60]):pick([0,0,15,30]);
-  return {start:fmtTime(start%1440),end:fmtTime((start+dur)%1440),breakMin:br};
+function minutesOf(start,end,breakMin){return Math.round((calcHours(start,end,breakMin)||0)*60)}
+function overlaps(a,b){return Math.max(a.start,b.start)<Math.min(a.end,b.end)}
+function hasOverlap(list,cand){return list.some(x=>overlaps(x,cand))}
+function addSampleShift(ds,jobIndex,startMin,durMin,breakMin){
+  const day=ensureDay(ds);
+  const cand={start:startMin,end:startMin+durMin};
+  const existing=day.works.filter(w=>w.status==='work').map(w=>{
+    const [sh,sm]=String(w.start||'0:0').split(':').map(Number);
+    const [eh,em]=String(w.end||'0:0').split(':').map(Number);
+    let a=sh*60+sm,b=eh*60+em;if(b<a)b+=1440;return {start:a,end:b};
+  });
+  if(hasOverlap(existing,cand))return false;
+  const w=getWorkForJob(ds,jobIndex);
+  w.status='work';w.jobIndex=jobIndex;w.start=fmtTime(startMin%1440);w.end=fmtTime((startMin+durMin)%1440);w.breakMin=breakMin;w.hours=calcHours(w.start,w.end,breakMin);
+  return true;
 }
+function sevenTotalMinutes(ds){
+  const d=parseDate(ds);let total=0;
+  for(let i=6;i>=0;i--){
+    const key=iso(addDays(d,-i));
+    ensureDay(key).works.forEach(w=>{if(w.status==='work')total+=minutesOf(w.start,w.end,w.breakMin||0)});
+  }
+  return total;
+}
+function addWithinLimit(ds,jobIndex,startMin,durMin,breakMin,limitMin){
+  const before=JSON.stringify(state.days[ds]||{works:[]});
+  if(!addSampleShift(ds,jobIndex,startMin,durMin,breakMin))return false;
+  if(sevenTotalMinutes(ds)>limitMin){state.days[ds]=JSON.parse(before);return false;}
+  return true;
+}
+function activeForDate(ds){return activeJobIndexes(ds)}
 state.currentWeekStart=weekStart(parseDate('2026-06-14'));
 state.lastDate='2026-06-20';
 state.student={name:'テスト 太郎'+rnd(1,99),id:'SAMPLE'+String(rnd(1,999)).padStart(3,'0'),className:'初級A'};
@@ -443,31 +467,62 @@ const jobCount=rnd(6,9);
 state.jobs=[];
 for(let i=0;i<jobCount;i++){
   const c=candidates[i];
-  const start= i<5 ? pick(['2026-05-01','2026-05-10','2026-06-01']) : pick(['2026-06-01','2026-06-05','2026-07-01']);
-  const end= i===0 ? '2026-06-15' : (i===jobCount-1 ? '2026-07-20' : pick(['','','','2026-07-31']));
+  const start=i<5?pick(['2026-05-01','2026-05-10','2026-06-01']):pick(['2026-06-01','2026-06-05','2026-07-01']);
+  const end=i===0?'2026-06-15':(i===jobCount-1?'2026-07-20':pick(['','','','2026-07-31']));
   state.jobs.push({name:c[0],content:c[1],startDate:start,endDate:end,closeDay:c[2]});
 }
-// limits.csvが読めない環境でも超過検証できるよう、サンプルでは一部上限を設定
+// limits.csvが読めない環境でも超過検証できるよう、サンプルでは全期間の上限を28時間に設定
 for(let d=parseDate('2026-05-01');iso(d)<='2026-07-31';d=addDays(d,1))state.limits[iso(d)]=28;
-// 複数月、夜勤、同一期間4件以上、超過が出やすいデータをランダム作成
-for(let d=parseDate('2026-05-03');iso(d)<='2026-07-10';d=addDays(d,1)){
-  const ds=iso(d);
-  const active=activeJobIndexes(ds);
+// 現実的な留学生データ：基本は直近7日28時間以内。途中に少数の違反週を混ぜる。
+const normalLimit=27.5*60;
+const violationDays=new Set(['2026-06-16','2026-06-17']);
+const dateList=[];for(let d=parseDate('2026-05-03');iso(d)<='2026-07-10';d=addDays(d,1))dateList.push(iso(d));
+for(const ds of dateList){
+  const active=activeForDate(ds);
   if(!active.length)continue;
-  let n=0;
-  if(ds>='2026-06-12'&&ds<='2026-06-18') n=rnd(2,4); // 超過検証用に多め
-  else if(Math.random()<0.38) n=1;
-  else if(Math.random()<0.12) n=2;
-  if(n===0)continue;
-  const shuffled=[...active].sort(()=>Math.random()-0.5).slice(0,Math.min(n,active.length));
-  shuffled.forEach((jobIndex,seq)=>{
-    let sh=makeShift();
-    if(seq===1 && Math.random()<0.25) sh={start:'23:00',end:'04:00',breakMin:60};
-    const w=getWorkForJob(ds,jobIndex);
-    w.status='work';w.jobIndex=jobIndex;w.start=sh.start;w.end=sh.end;w.breakMin=sh.breakMin;w.hours=calcHours(sh.start,sh.end,sh.breakMin);
+  // 週4〜5日程度勤務。多くの日は1勤務、たまに2勤務。
+  let workCount=0;
+  if(violationDays.has(ds))workCount=2;
+  else if(Math.random()<0.48)workCount=1;
+  else if(Math.random()<0.09)workCount=2;
+  if(workCount===0)continue;
+  const jobs=[...active].sort(()=>Math.random()-0.5).slice(0,Math.min(workCount,active.length));
+  const slots=[
+    {start:9*60,dur:240,br:0},
+    {start:14*60,dur:240,br:0},
+    {start:17*60,dur:300,br:30},
+    {start:18*60,dur:240,br:0},
+    {start:22*60,dur:300,br:60} // 夜勤 22:00-03:00
+  ].sort(()=>Math.random()-0.5);
+  jobs.forEach((jobIndex,i)=>{
+    const slot=slots[i%slots.length];
+    const limit=violationDays.has(ds)?35*60:normalLimit;
+    addWithinLimit(ds,jobIndex,slot.start,slot.dur,slot.br,limit);
   });
 }
-save();render();alert('ランダムなサンプルデータを作成しました。複数月・夜勤・超過・同一期間4件以上のアルバイトを確認できます。');
+// 違反が必ず少し含まれるように、6/12〜6/17付近に重ならない追加勤務を入れる。
+const forced=[
+  ['2026-06-12',0,17*60,300,30],
+  ['2026-06-13',1,9*60,360,60],
+  ['2026-06-14',2,9*60,360,60],
+  ['2026-06-15',3,17*60,300,30],
+  ['2026-06-16',4,9*60,360,60],
+  ['2026-06-17',5,17*60,300,30]
+];
+forced.forEach(([ds,ji,st,dur,br])=>{if(ji<state.jobs.length&&isJobActive(ji,ds))addSampleShift(ds,ji,st,dur,br)});
+// 同一日の重なりがないか最終確認。重なったものは後から出た勤務を削除する。
+Object.keys(state.days).forEach(ds=>{
+  const kept=[];
+  ensureDay(ds).works=ensureDay(ds).works.filter(w=>{
+    if(w.status!=='work')return true;
+    const [sh,sm]=w.start.split(':').map(Number),[eh,em]=w.end.split(':').map(Number);
+    let a=sh*60+sm,b=eh*60+em;if(b<a)b+=1440;
+    const cand={start:a,end:b};
+    if(hasOverlap(kept,cand))return false;
+    kept.push(cand);return true;
+  });
+});
+save();render();alert('ランダムなサンプルデータを作成しました。基本は直近7日28時間以内で、少数の超過週を含みます。同じ時間帯の重複勤務は作らないようにしています。');
 }
 function resetAllData(){if(!confirm('本当にすべての入力データを削除しますか？'))return;if(!confirm('学生情報・アルバイト情報・勤務記録がすべて削除されます。よろしいですか？'))return;localStorage.removeItem(KEY);state=JSON.parse(JSON.stringify(initial));render();alert('データを初期化しました。')}
 document.addEventListener('input',e=>{const t=e.target;if(t.matches('#studentName,#studentId,#studentClass,[data-job-name],[data-job-content],[data-job-start],[data-job-end],[data-job-close]')){updateStateFromInputs();save();updateJobSummary();renderDays()}});
