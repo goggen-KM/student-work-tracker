@@ -15,7 +15,7 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
-<title>student-work-tracker-v050</title>
+<title>student-work-tracker-v052</title>
 <script src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.bundle.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
@@ -27,19 +27,18 @@
 <body>
 <div class="app">
 <header>
-<h1>アルバイト時間記録 v050</h1>
-<div class="small">週表示（日曜〜土曜）。Excel共有・3週間PDF共有・limits.csv対応。v042では、勤務先選択肢に「なし」を追加し、サンプルデータをランダム生成にしました。Excelは常に全データ出力、PDFは表示週＋前2週間を3ページに分けて出力します。</div>
+<h1>アルバイト時間記録 v052</h1>
 <div class="bar"><button class="btn light" id="prevWeek">＜ 前週</button><div class="weekLabel" id="weekLabel"></div><button class="btn light" id="nextWeek">次週 ＞</button><button class="btn secondary" id="todayBtn">今週</button></div>
 </header>
 <details class="card" id="studentDetails"><summary><span class="summaryRow">学生情報</span></summary><div class="collapseBody"><div class="small">学生名・学籍番号・クラスは最初に1回だけ入力します。</div><div class="grid" style="margin-top:8px"><div><label>学生名</label><input id="studentName" placeholder="例：山田 太郎"></div><div><label>学籍番号</label><input id="studentId" placeholder="例：A001"></div></div><div style="margin-top:10px"><label>クラス</label><input id="studentClass" placeholder="例：初級A"></div></div></details>
 <details class="card" id="jobDetails"><summary><span class="summaryRow" id="jobSummary">アルバイト管理</span></summary><div class="collapseBody"><div class="small">アルバイト名・内容・勤務期間・締め日を登録します。必要な分だけ「＋アルバイト追加」で増やします。</div><div id="jobSettings"></div></div></details>
-<details class="card" id="toolDetails"><summary><span class="summaryRow">ツール</span></summary><div class="collapseBody"><div class="grid"><div><label>期間開始</label><input id="bulkStart" type="date"></div><div><label>期間終了</label><input id="bulkEnd" type="date"></div></div><div class="tools"><button class="btn light" id="blankToNone">選択期間の未入力だけを「なし」にする</button><button class="btn light" id="copyPrevWeek">表示中の週を先週と同じにする</button></div><div class="small">※「未入力だけをなし」は、すでに「あり」で決定した記録を消しません。</div><hr style="border:0;border-top:1px solid var(--line);margin:12px 0"><div class="small">データ引継ぎ用：過去に出力した勤務記録Excelを読み込んで、このスマホのデータに統合します。過去データに入力があるものを「未入力」で上書きしません。</div><div class="tools"><button class="btn light" id="importExcelBtn">勤務記録Excelを読み込む</button><input id="importExcelInput" type="file" accept=".xlsx,.xls" style="display:none"></div><div class="statusLine" id="importStatus">読み込み：未実行</div><hr style="border:0;border-top:1px solid var(--line);margin:12px 0"><div class="small">開発・テスト用。最終版では削除します。</div><div class="tools"><button class="btn light" id="sampleDataBtn">サンプルデータを作成</button><button class="btn bad" id="resetDataBtn">データを初期化</button></div></div></details>
+<details class="card" id="toolDetails"><summary><span class="summaryRow">ツール</span></summary><div class="collapseBody"><div class="grid"><div><label>期間開始</label><input id="bulkStart" type="date"></div><div><label>期間終了</label><input id="bulkEnd" type="date"></div></div><div class="tools"><button class="btn light" id="copyPrevWeek">表示中の週を先週と同じにする</button></div><hr style="border:0;border-top:1px solid var(--line);margin:12px 0"><div class="small">データ引継ぎ用：過去に出力した勤務記録Excelを読み込んで、このスマホのデータに統合します。過去データに入力があるものを「未入力」で上書きしません。</div><div class="tools"><button class="btn light" id="importExcelBtn">勤務記録Excelを読み込む</button><input id="importExcelInput" type="file" accept=".xlsx,.xls" style="display:none"></div><div class="statusLine" id="importStatus">読み込み：未実行</div><hr style="border:0;border-top:1px solid var(--line);margin:12px 0"><div class="small">開発・テスト用。最終版では削除します。</div><div class="tools"><button class="btn light" id="sampleDataBtn">サンプルデータを作成</button><button class="btn bad" id="resetDataBtn">データを初期化</button></div></div></details>
 
 <div id="days"></div>
 </div>
 <div class="footer"><button class="btn" id="shareExcelBtn">Excelを共有</button><button class="btn secondary" id="sharePdfBtn">直近3週間PDFを共有</button><button class="btn light" id="saveBtn">今すぐ保存</button></div>
 <script>
-const VERSION='v050';
+const VERSION='v052';
 const KEY='student-work-tracker-v047';
 const OLD_KEYS=['student-work-tracker-v046','student-work-tracker-v045','student-work-tracker-v043','student-work-tracker-v042','student-work-tracker-v041','student-work-tracker-v040','student-work-tracker-v039','student-work-tracker-v038','student-work-tracker-v037','student-work-tracker-v035','student-work-tracker-v034','student-work-tracker-v033','student-work-tracker-v032','student-work-tracker-v031','student-work-tracker-v030','student-work-tracker-v029','student-work-tracker-v028','student-work-tracker-v027','student-work-tracker-v026','student-work-tracker-v025','student-work-tracker-v024','student-work-tracker-v023','student-work-tracker-v022','student-work-tracker-v021','student-work-tracker-v020','student-work-tracker-v019','student-work-tracker-v018'];
 const jpWeek=['日','月','火','水','木','金','土'];
@@ -87,8 +86,8 @@ function activeJobOptions(ds,selected,status){let html='<option value="">選択<
 function emptyWork(){return {status:'blank',jobIndex:null,start:'',end:'',breakMin:0,hours:null,_manual:false};}
 function addWorkRow(ds){const day=ensureDay(ds);const w=emptyWork();w._manual=true;day.works.push(w);save();renderDays();}
 function deleteWorkRow(ds,idx){const day=ensureDay(ds);if(idx>=0&&idx<day.works.length)day.works.splice(idx,1);save();renderDays();}
-function workRowHtml(ds,item,rowNo,showDate){const w=item.work,idx=item.index,d=parseDate(ds),readOnly=item.readOnly;const sum7=sevenHours(ds),lim=limit(ds),cls=statusClass(sum7,lim);const dateHtml=showDate?`${d.getMonth()+1}/${d.getDate()}<br><span class="${d.getDay()===0?'daySunday':(d.getDay()===6?'daySaturday':'')}">(${jpWeek[d.getDay()]})</span>`:'';if(readOnly){return `<tr class="${d.getDay()===0?'rowSunday':(d.getDay()===6?'rowSaturday':'')}"><td class="dayCell">${dateHtml}</td><td>${esc(jobLabel(w.jobIndex))}<div class="small">期間外・記録のみ</div></td><td>${esc(w.start||'')}</td><td>${esc(w.end||'')}</td><td>${w.breakMin??0}</td><td class="hoursCell">${displayHours(w)}</td><td class="${cls}">${showDate?sum7.toFixed(1)+'h':''}</td><td>${showDate?`<button type="button" class="smallButton" data-add-work="${ds}">＋</button>`:''}</td><td></td></tr>`}return `<tr class="${d.getDay()===0?'rowSunday':(d.getDay()===6?'rowSaturday':'')}"><td class="dayCell">${dateHtml}</td><td><select class="workplaceSelect" data-work-field="jobIndex" data-work-date="${ds}" data-work-index="${idx}">${activeJobOptions(ds,w.jobIndex,w.status)}</select></td><td><input class="timeInput" type="text" inputmode="numeric" placeholder="812" data-work-field="start" data-work-date="${ds}" data-work-index="${idx}" value="${esc(w.start||'')}"></td><td><input class="timeInput" type="text" inputmode="numeric" placeholder="2100" data-work-field="end" data-work-date="${ds}" data-work-index="${idx}" value="${esc(w.end||'')}"></td><td><input class="breakInput" type="number" min="0" step="5" placeholder="60" data-work-field="breakMin" data-work-date="${ds}" data-work-index="${idx}" value="${w.breakMin||''}"></td><td class="hoursCell">${displayHours(w)}</td><td class="${cls}">${showDate?sum7.toFixed(1)+'h':''}</td><td>${showDate?`<button type="button" class="smallButton" data-add-work="${ds}">＋</button>`:''}</td><td><button type="button" class="smallButton" data-delete-work="${ds},${idx}">－</button></td></tr>`;}
-function renderDays(){const box=document.getElementById('days');box.innerHTML='';const card=document.createElement('section');card.className='card day';let html='<table class="workTable"><thead><tr><th>日付</th><th>勤務先</th><th>出勤</th><th>退勤</th><th>休憩</th><th>時間</th><th>7日計</th><th>追加</th><th>削除</th></tr></thead><tbody>';weekDates(state.currentWeekStart).forEach(ds=>{let items=visibleWorks(ds);if(items.length===0){const day=ensureDay(ds);let bi=day.works.findIndex(w=>{normalizeWork(w);return w.status!=='work'&&!nonEmpty(w.start)&&!nonEmpty(w.end)&&Number(w.breakMin||0)===0&&(w.jobIndex===null||w.jobIndex===undefined)});if(bi<0){day.works.push(emptyWork());bi=day.works.length-1}items=[{index:bi,work:day.works[bi],readOnly:false}];}items.forEach((it,i)=>html+=workRowHtml(ds,it,i,i===0));});html+='</tbody></table><div class="small" style="margin-top:8px">勤務がある日だけ、勤務先・出勤・退勤・休憩を入力します。入力行がない日は勤務なしとして扱います。</div>';card.innerHTML=html;box.appendChild(card)}
+function workRowHtml(ds,item,rowNo,showDate){const w=item.work,idx=item.index,d=parseDate(ds),readOnly=item.readOnly;const sum7=sevenHours(ds),lim=limit(ds),cls=statusClass(sum7,lim);const dateHtml=showDate?`${d.getMonth()+1}/${d.getDate()}<br><span class="${d.getDay()===0?'daySunday':(d.getDay()===6?'daySaturday':'')}">(${jpWeek[d.getDay()]})</span>`:'';if(readOnly){return `<tr class="${d.getDay()===0?'rowSunday':(d.getDay()===6?'rowSaturday':'')}"><td class="dayCell">${dateHtml}</td><td>${esc(jobLabel(w.jobIndex))}<div class="small">期間外・記録のみ</div></td><td>${esc(w.start||'')}</td><td>${esc(w.end||'')}</td><td>${w.breakMin??0}</td><td class="hoursCell">${displayHours(w)}</td><td class="${cls}">${showDate?sum7.toFixed(1)+' / '+lim+'h':''}</td><td>${showDate?`<button type="button" class="smallButton" data-add-work="${ds}">＋</button>`:''}</td><td></td></tr>`}return `<tr class="${d.getDay()===0?'rowSunday':(d.getDay()===6?'rowSaturday':'')}"><td class="dayCell">${dateHtml}</td><td><select class="workplaceSelect" data-work-field="jobIndex" data-work-date="${ds}" data-work-index="${idx}">${activeJobOptions(ds,w.jobIndex,w.status)}</select></td><td><input class="timeInput" type="text" inputmode="numeric" placeholder="812" data-work-field="start" data-work-date="${ds}" data-work-index="${idx}" value="${esc(w.start||'')}"></td><td><input class="timeInput" type="text" inputmode="numeric" placeholder="2100" data-work-field="end" data-work-date="${ds}" data-work-index="${idx}" value="${esc(w.end||'')}"></td><td><input class="breakInput" type="number" min="0" step="5" placeholder="00" data-work-field="breakMin" data-work-date="${ds}" data-work-index="${idx}" value="${w.breakMin||''}"></td><td class="hoursCell">${displayHours(w)}</td><td class="${cls}">${showDate?sum7.toFixed(1)+' / '+lim+'h':''}</td><td>${showDate?`<button type="button" class="smallButton" data-add-work="${ds}">＋</button>`:''}</td><td><button type="button" class="smallButton" data-delete-work="${ds},${idx}">－</button></td></tr>`;}
+function renderDays(){const box=document.getElementById('days');box.innerHTML='';const card=document.createElement('section');card.className='card day';let html='<table class="workTable"><thead><tr><th>日付</th><th>勤務先</th><th>出勤</th><th>退勤</th><th>休憩</th><th>時間</th><th>7日計</th><th>追加</th><th>削除</th></tr></thead><tbody>';weekDates(state.currentWeekStart).forEach(ds=>{let items=visibleWorks(ds);if(items.length===0){const day=ensureDay(ds);let bi=day.works.findIndex(w=>{normalizeWork(w);return w.status!=='work'&&!nonEmpty(w.start)&&!nonEmpty(w.end)&&Number(w.breakMin||0)===0&&(w.jobIndex===null||w.jobIndex===undefined)});if(bi<0){day.works.push(emptyWork());bi=day.works.length-1}items=[{index:bi,work:day.works[bi],readOnly:false}];}items.forEach((it,i)=>html+=workRowHtml(ds,it,i,i===0));});html+='</tbody></table>';card.innerHTML=html;box.appendChild(card)}
 function setBlankToNone(ds){/* v040では未入力/なしを廃止。勤務行がない日は勤務なしとして扱います。 */}
 function getPeriod(){const a=document.getElementById('bulkStart').value,b=document.getElementById('bulkEnd').value;if(!a||!b){alert('期間を選んでください');return null}if(a>b){alert('終了日は開始日以後にしてください');return null}return[a,b]}
 function rows(a,b){const out=[];for(let d=parseDate(a);iso(d)<=b;d=addDays(d,1)){const ds=iso(d);ensureDay(ds).works.forEach((w)=>{normalizeWork(w);const s7=sevenHours(ds),lim=limit(ds);if(w.status==='none'){out.push({date:ds,week:jpWeek[d.getDay()],jobNo:'',name:'なし',content:'',status:'none',statusJa:'なし',start:'',end:'',breakMin:0,hours:0,sum7:s7,limit:lim,judge:judge(s7,lim)});return;}if(w.status!=='work'||w.jobIndex===null||w.jobIndex===undefined)return;const ji=Number(w.jobIndex),h=typeof w.hours==='number'?w.hours:0;out.push({date:ds,week:jpWeek[d.getDay()],jobNo:ji+1,name:jobLabel(ji),content:(state.jobs[ji]&&state.jobs[ji].content)||'',status:'work',statusJa:'あり',start:w.start||'',end:w.end||'',breakMin:w.breakMin??0,hours:h,sum7:s7,limit:lim,judge:judge(s7,lim)})})}return out}
@@ -150,7 +149,7 @@ async function shareBlob(blob,filename,title){
   const file=new File([blob],filename,{type:blob.type});
   try{
     if(navigator.canShare && navigator.canShare({files:[file]})){
-      await navigator.share({files:[file],title:title||filename});
+      await navigator.share({files:[file]});
       alert('共有画面を開きました。LINE・ファイル保存などを選んでください。');
       return true;
     }
@@ -196,7 +195,7 @@ async function shareBlobOrOpen(blob,filename,title,label){
   const file=new File([blob],filename,{type:blob.type});
   try{
     if(navigator.canShare && navigator.canShare({files:[file]})){
-      await navigator.share({files:[file],title:title||filename});
+      await navigator.share({files:[file]});
       alert('共有画面を開きました。LINE・ファイル保存などを選んでください。');
       return true;
     }
@@ -222,7 +221,7 @@ function validateJobCloseDays(){
   return true;
 }
 
-async function shareExcel(){try{updateStateFromInputs();if(!validateJobCloseDays())return;save();const[a,b]=allDataRange();const wb=buildWorkbook(a,b);const arr=XLSX.write(wb,{bookType:'xlsx',type:'array'});const blob=new Blob([arr],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});await shareBlob(blob,fileNameBase(a,b)+'.xlsx','アルバイト時間記録Excel')}catch(e){alert('Excel作成に失敗しました：'+e.message)}}
+async function shareExcel(){try{updateStateFromInputs();if(!validateJobCloseDays())return;save();const[a,b]=allDataRange();const wb=buildWorkbook(a,b);const arr=XLSX.write(wb,{bookType:'xlsx',type:'array'});const blob=new Blob([arr],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});await shareBlob(blob,fileNameBase(a,b)+'.xlsx')}catch(e){alert('Excel作成に失敗しました：'+e.message)}}
 function formatJpDate(ds){
   const d=parseDate(ds);
   return `${d.getFullYear()}/${d.getMonth()+1}/${d.getDate()}（${jpWeek[d.getDay()]}）`;
@@ -299,7 +298,7 @@ async function sharePdf(){
     const [a,b]=threeWeekRange();
     const filename=`${safeFilePart(state.student.id)}_${safeFilePart(state.student.name)}_勤務記録_${a}_${b}.pdf`;
     const blob=doc.output('blob');
-    await shareBlobOrOpen(blob,filename,'アルバイト時間記録PDF','PDF');
+    await shareBlobOrOpen(blob,filename,undefined,'PDF');
   }catch(e){alert('PDF作成に失敗しました：'+e.message)}
 }
 
@@ -550,7 +549,6 @@ document.getElementById('prevWeek').onclick=()=>{updateStateFromInputs();state.c
 document.getElementById('nextWeek').onclick=()=>{updateStateFromInputs();state.currentWeekStart=iso(addDays(parseDate(state.currentWeekStart),7));save();render()};
 document.getElementById('todayBtn').onclick=()=>{state.currentWeekStart=weekStart(new Date());state.lastDate=iso(new Date());save();render()};
 document.getElementById('saveBtn').onclick=()=>{updateStateFromInputs();if(!validateJobCloseDays())return;save();updateJobSummary();renderDays();alert('保存しました')};
-document.getElementById('blankToNone').onclick=()=>{alert('v040では「未入力／なし」を廃止しました。勤務行がない日は自動的に勤務なしとして扱います。')};
 document.getElementById('copyPrevWeek').onclick=()=>{const a=state.currentWeekStart,b=weekEndFromStart(a);if(!confirm(a+'〜'+b+' を先週と同じ内容にします。'))return;for(let d=parseDate(a);iso(d)<=b;d=addDays(d,1)){state.days[iso(d)]=JSON.parse(JSON.stringify(ensureDay(iso(addDays(d,-7)))))}save();renderDays()};
 
 document.getElementById('shareExcelBtn').onclick=()=>shareExcel();
