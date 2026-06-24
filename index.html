@@ -15,7 +15,7 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
-<title>student-work-tracker-v063</title>
+<title>student-work-tracker-v064</title>
 <script src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.bundle.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
@@ -27,7 +27,7 @@
 <body>
 <div class="app">
 <header>
-<h1>アルバイト時間記録 v063</h1>
+<h1>アルバイト時間記録 v064</h1>
 <div class="small" id="limitStatus">日別上限CSV：読込中...</div>
 <div class="bar"><button class="btn light" id="prevWeek">＜ 前週</button><div class="weekLabel" id="weekLabel"></div><button class="btn light" id="nextWeek">次週 ＞</button><button class="btn secondary" id="todayBtn">今週</button></div>
 </header>
@@ -39,7 +39,7 @@
 </div>
 <div class="footer"><button class="btn" id="shareExcelBtn">Excelを共有</button><button class="btn secondary" id="sharePdfBtn">直近3週間PDFを共有</button><button class="btn light" id="saveBtn">今すぐ保存</button></div>
 <script>
-const VERSION='v063';
+const VERSION='v064';
 const KEY='student-work-tracker-v047';
 const OLD_KEYS=['student-work-tracker-v046','student-work-tracker-v045','student-work-tracker-v043','student-work-tracker-v042','student-work-tracker-v041','student-work-tracker-v040','student-work-tracker-v039','student-work-tracker-v038','student-work-tracker-v037','student-work-tracker-v035','student-work-tracker-v034','student-work-tracker-v033','student-work-tracker-v032','student-work-tracker-v031','student-work-tracker-v030','student-work-tracker-v029','student-work-tracker-v028','student-work-tracker-v027','student-work-tracker-v026','student-work-tracker-v025','student-work-tracker-v024','student-work-tracker-v023','student-work-tracker-v022','student-work-tracker-v021','student-work-tracker-v020','student-work-tracker-v019','student-work-tracker-v018'];
 const jpWeek=['日','月','火','水','木','金','土'];
