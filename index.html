@@ -667,6 +667,11 @@ const forced=[
   ['2026-06-17',5,17*60,300,30]
 ];
 forced.forEach(([ds,ji,st,dur,br])=>{if(ji<state.jobs.length&&isJobActive(ji,ds))addSampleShift(ds,ji,st,dur,br)});
+// 「なし」の処理を確認できるよう、サンプルに明示的な休みの日を入れる。
+// 勤務データがある日を上書きして「なし」にすることで、Excel/PDF/Back up/読み込みで確認しやすくする。
+['2026-06-18','2026-06-22','2026-07-02'].forEach(ds=>{
+  state.days[ds]={works:[{status:'none',jobIndex:null,start:'',end:'',breakMin:0,hours:0,_manual:true}]};
+});
 // 同一日の重なりがないか最終確認。重なったものは後から出た勤務を削除する。
 Object.keys(state.days).forEach(ds=>{
   const kept=[];
@@ -679,7 +684,7 @@ Object.keys(state.days).forEach(ds=>{
     kept.push(cand);return true;
   });
 });
-save();render();alert('ランダムなサンプルデータを作成しました。基本は直近7日28時間以内で、少数の超過週を含みます。同じ時間帯の重複勤務は作らないようにしています。');
+save();render();alert('ランダムなサンプルデータを作成しました。基本は直近7日28時間以内で、少数の超過週と「なし」の日を含みます。同じ時間帯の重複勤務は作らないようにしています。');
 }
 function resetAllData(){if(!confirm('本当にすべての入力データを削除しますか？'))return;if(!confirm('学生情報・アルバイト情報・勤務記録がすべて削除されます。よろしいですか？'))return;localStorage.removeItem(KEY);state=JSON.parse(JSON.stringify(initial));render();alert('データを初期化しました。')}
 document.addEventListener('input',e=>{const t=e.target;if(t.matches('#studentName,#studentId,#studentClass,[data-job-name],[data-job-content],[data-job-start],[data-job-end],[data-job-close]')){updateStateFromInputs();save();updateJobSummary();renderDays()}});
