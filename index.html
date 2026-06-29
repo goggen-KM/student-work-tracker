@@ -257,6 +257,26 @@ async function shareBlobOrOpen(blob,filename,title,label){
   return openFileFallback(blob,filename,label||'PDF');
 }
 
+
+function saveBlobForBackup(blob,filename){
+  try{
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=url;
+    a.download=filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),1500);
+    alert('保存しました');
+    return true;
+  }catch(e){
+    console.warn('backup save failed',e);
+    alert('ERROR');
+    throw e;
+  }
+}
+
 function validateJobCloseDays(){
   const missing=[];
   state.jobs.forEach((j,i)=>{
@@ -274,7 +294,7 @@ function validateJobCloseDays(){
 }
 
 async function shareExcel(){try{updateStateFromInputs();if(!validateJobCloseDays())return;save();const[a,b]=allDataRangeForSubmit();const wb=buildWorkbook(a,b);const arr=XLSX.write(wb,{bookType:'xlsx',type:'array'});const blob=new Blob([arr],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});await shareBlob(blob,fileNameBase(a,b)+'.xlsx')}catch(e){alert('Excel作成に失敗しました：'+e.message)}}
-async function backupExcel(){const status=document.getElementById('backupStatus');try{updateStateFromInputs();if(!validateJobCloseDays())return;save();if(status)status.textContent='バックアップ：作成中...';const[a,b]=allDataRange();const wb=buildWorkbook(a,b);const arr=XLSX.write(wb,{bookType:'xlsx',type:'array'});const blob=new Blob([arr],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});await shareBlob(blob,'backup_'+fileNameBase(a,b)+'.xlsx');if(status)status.textContent='バックアップ：作成しました'}catch(e){if(status)status.textContent='バックアップ失敗：'+e.message;alert('バックアップ作成に失敗しました：'+e.message)}}
+async function backupExcel(){const status=document.getElementById('backupStatus');try{updateStateFromInputs();if(!validateJobCloseDays())return;save();if(status)status.textContent='バックアップ：作成中...';const[a,b]=allDataRange();const wb=buildWorkbook(a,b);const arr=XLSX.write(wb,{bookType:'xlsx',type:'array'});const blob=new Blob([arr],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});saveBlobForBackup(blob,'backup_'+fileNameBase(a,b)+'.xlsx');if(status)status.textContent='保存しました'}catch(e){if(status)status.textContent='ERROR';console.warn('backup failed',e);}}
 function formatJpDate(ds){
   const d=parseDate(ds);
   return `${d.getFullYear()}/${d.getMonth()+1}/${d.getDate()}（${jpWeek[d.getDay()]}）`;
