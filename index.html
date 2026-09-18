@@ -15,7 +15,7 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
-<title>student-work-tracker-v073</title>
+<title>student-work-tracker-v076</title>
 <script src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.bundle.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
@@ -27,19 +27,19 @@
 <body>
 <div class="app">
 <header>
-<h1>アルバイト時間記録 v073</h1>
+<h1>アルバイト時間記録 v076</h1>
 <div class="small" id="limitStatus">日別上限CSV：読込中...</div>
 <div class="bar"><button class="btn light" id="prevWeek">＜ 前週</button><div class="weekLabel" id="weekLabel"></div><button class="btn light" id="nextWeek">次週 ＞</button><button class="btn secondary" id="todayBtn">今週</button></div>
 </header>
 <details class="card" id="studentDetails"><summary><span class="summaryRow">学生情報</span></summary><div class="collapseBody"><div class="small">学生名・学籍番号・クラスは最初に1回だけ入力します。</div><div class="grid" style="margin-top:8px"><div><label>学生名</label><input id="studentName" placeholder="例：山田 太郎"></div><div><label>学籍番号</label><input id="studentId" placeholder="例：26-04-001"></div></div><div style="margin-top:10px"><label>クラス</label><input id="studentClass" placeholder="例：AM101"></div></div></details>
 <details class="card" id="jobDetails"><summary><span class="summaryRow" id="jobSummary">アルバイト管理</span></summary><div class="collapseBody"><div class="small">アルバイト名・内容・勤務期間・締め日を登録します。必要な分だけ「＋アルバイト追加」で増やします。</div><div id="jobSettings"></div></div></details>
-<details class="card" id="toolDetails"><summary><span class="summaryRow">ツール</span></summary><div class="collapseBody"><div class="tools"><button class="btn light" id="copyPrevWeek">予定をコピーする</button></div><hr style="border:0;border-top:1px solid var(--line);margin:12px 0"><div class="small">データ引継ぎ用：過去に出力した勤務記録Excelを読み込んで、このスマホのデータに統合します。同じ日にスマホ側の入力とExcel側の入力が異なる場合は、新しいデータであるスマホ側を優先し、その日全体はExcelで上書きしません。</div><div class="tools"><button class="btn light" id="forceUpdateBtn">最新版に更新</button></div><div class="statusLine" id="updateStatus">更新：未実行</div><div class="tools"><button class="btn light" id="backupExcelBtn">Back up data</button></div><div class="statusLine" id="backupStatus">バックアップ：未実行</div><div class="tools"><button class="btn light" id="importExcelBtn">勤務記録Excelを読み込む</button><input id="importExcelInput" type="file" accept=".xlsx,.xls" style="display:none"></div><div class="statusLine" id="importStatus">読み込み：未実行</div><hr style="border:0;border-top:1px solid var(--line);margin:12px 0"><div class="small">開発・テスト用。最終版では削除します。</div><div class="tools"><button class="btn light" id="sampleDataBtn">サンプルデータを作成</button><button class="btn bad" id="resetDataBtn">データを初期化</button></div></div></details>
+<details class="card" id="toolDetails"><summary><span class="summaryRow">ツール</span></summary><div class="collapseBody"><div class="tools"><button class="btn light" id="copyPrevWeek">予定をコピーする</button></div><hr style="border:0;border-top:1px solid var(--line);margin:12px 0"><div class="small">データ引継ぎ用：過去に出力した勤務記録Excelを読み込んで、このスマホのデータに統合します。同じ日にスマホ側の入力とExcel側の入力が異なる場合は、新しいデータであるスマホ側を優先し、その日全体はExcelで上書きしません。</div><div class="tools"><button class="btn light" id="forceUpdateBtn">最新版に更新</button></div><div class="statusLine" id="updateStatus">更新：未実行</div><div class="tools"><button class="btn light" id="backupExcelBtn">Back up data</button></div><div class="statusLine" id="backupStatus">バックアップ：未実行</div><div class="tools"><button class="btn light" id="importExcelBtn">勤務記録Excelを読み込む</button><input id="importExcelInput" type="file" accept=".xlsx,.xls" style="display:none"></div><div class="statusLine" id="importStatus">読み込み：未実行</div><div class="tools"><button class="btn light" id="mergeJobsBtn" type="button">アルバイト先を統合</button></div><div id="mergeJobsPanel" class="jobCard hidden"><div class="small">同じアルバイト先が別名で登録されている場合に統合します。過去の勤務記録も残す側へまとめます。</div><div class="grid" style="margin-top:10px"><div><label>統合するアルバイト先 A</label><select id="mergeJobA"></select></div><div><label>統合するアルバイト先 B</label><select id="mergeJobB"></select></div></div><div style="margin-top:10px"><label>残すアルバイト先名</label><select id="mergeKeepJob"></select></div><div class="tools"><button class="btn" id="executeMergeJobsBtn" type="button">統合する</button><button class="btn light" id="cancelMergeJobsBtn" type="button">キャンセル</button></div><div class="statusLine" id="mergeJobsStatus"></div></div><hr style="border:0;border-top:1px solid var(--line);margin:12px 0"><div class="small">開発・テスト用。最終版では削除します。</div><div class="tools"><button class="btn light" id="sampleDataBtn">サンプルデータを作成</button><button class="btn bad" id="resetDataBtn">データを初期化</button></div></div></details>
 
 <div id="days"></div>
 </div>
 <div class="footer"><button class="btn" id="shareExcelBtn">Excelを共有</button><button class="btn secondary" id="sharePdfBtn">直近3週間PDFを共有</button><button class="btn light" id="saveBtn">今すぐ保存</button></div>
 <script>
-const VERSION='v073';
+const VERSION='v076';
 const KEY='student-work-tracker-v047';
 const OLD_KEYS=['student-work-tracker-v046','student-work-tracker-v045','student-work-tracker-v043','student-work-tracker-v042','student-work-tracker-v041','student-work-tracker-v040','student-work-tracker-v039','student-work-tracker-v038','student-work-tracker-v037','student-work-tracker-v035','student-work-tracker-v034','student-work-tracker-v033','student-work-tracker-v032','student-work-tracker-v031','student-work-tracker-v030','student-work-tracker-v029','student-work-tracker-v028','student-work-tracker-v027','student-work-tracker-v026','student-work-tracker-v025','student-work-tracker-v024','student-work-tracker-v023','student-work-tracker-v022','student-work-tracker-v021','student-work-tracker-v020','student-work-tracker-v019','student-work-tracker-v018'];
 const jpWeek=['日','月','火','水','木','金','土'];
@@ -114,6 +114,73 @@ function render(){document.getElementById('studentName').value=state.student.nam
 function updateJobSummary(){const registered=state.jobs.filter(j=>hasJob(j)).length;const js=document.getElementById('jobSummary');if(js)js.textContent='アルバイト管理（登録済み '+registered+'件）'}
 function renderJobs(){const box=document.getElementById('jobSettings');if(!box)return;updateJobSummary();box.innerHTML='';state.jobs.forEach((j,i)=>{j=j||{name:'',content:'',startDate:'',endDate:'',closeDay:''};if(!hasAnyJobData(j))return;const div=document.createElement('div');div.className='jobCard';const title=(j.name&&j.name.trim())?j.name.trim():('アルバイト'+(i+1));div.innerHTML=`<div class="jobCardTitle">${esc(title)}</div><div class="jobFields"><div class="nameField"><label>アルバイト名</label><input data-job-name="${i}" value="${esc(j.name||'')}" placeholder="例：アルバイト${i+1}"></div><div class="nameField"><label>アルバイト内容</label><input data-job-content="${i}" value="${esc(j.content||'')}" placeholder="例：コンビニ店員、ホール、工場作業"></div><div><label>勤務開始日</label><input data-job-start="${i}" type="date" value="${esc(j.startDate||'')}"></div><div><label>勤務終了日</label><input data-job-end="${i}" type="date" value="${esc(j.endDate||'')}"><div class="small">空欄なら現在も勤務中</div></div><div><label>締め日（必須）</label><input data-job-close="${i}" type="number" min="1" max="31" step="1" value="${esc(j.closeDay||'')}" placeholder="例：15"><div class="small">1〜31。31は月末扱い</div></div></div>`;box.appendChild(div)});const add=document.createElement('div');add.className='tools';add.innerHTML='<button class="btn light" type="button" id="addJobMasterBtn" onclick="addJobMaster()">＋ アルバイト追加</button>';box.appendChild(add)}
 function addJobMaster(){state.jobs.push({name:'',content:'',startDate:'',endDate:'',closeDay:'',_editing:true});save();renderJobs();renderDays();}
+
+function registeredJobIndexes(){
+  const out=[];
+  state.jobs.forEach((j,i)=>{if(hasJob(j))out.push(i)});
+  return out;
+}
+function mergeJobOptionHtml(selected){
+  let html='<option value="">選択</option>';
+  registeredJobIndexes().forEach(i=>{html+=`<option value="${i}" ${String(selected)===String(i)?'selected':''}>${esc(jobLabel(i))}</option>`});
+  return html;
+}
+function refreshMergeJobSelectors(){
+  const a=document.getElementById('mergeJobA'),b=document.getElementById('mergeJobB'),k=document.getElementById('mergeKeepJob');
+  if(!a||!b||!k)return;
+  const av=a.value,bv=b.value,kv=k.value;
+  a.innerHTML=mergeJobOptionHtml(av);
+  b.innerHTML=mergeJobOptionHtml(bv);
+  const choices=[];
+  if(a.value!==''&&a.value!==b.value)choices.push(Number(a.value));
+  if(b.value!==''&&b.value!==a.value)choices.push(Number(b.value));
+  k.innerHTML='<option value="">選択</option>'+choices.map(i=>`<option value="${i}" ${String(kv)===String(i)?'selected':''}>${esc(jobLabel(i))}</option>`).join('');
+  if(choices.length===2 && !choices.includes(Number(k.value)))k.value=String(choices[0]);
+}
+function showMergeJobsPanel(){
+  const ids=registeredJobIndexes();
+  if(ids.length<2){alert('統合するには、アルバイト先が2件以上必要です。');return;}
+  const panel=document.getElementById('mergeJobsPanel');
+  panel.classList.remove('hidden');
+  const a=document.getElementById('mergeJobA'),b=document.getElementById('mergeJobB');
+  a.innerHTML=mergeJobOptionHtml(ids[0]); b.innerHTML=mergeJobOptionHtml(ids[1]);
+  a.value=String(ids[0]); b.value=String(ids[1]);
+  refreshMergeJobSelectors();
+  document.getElementById('mergeJobsStatus').textContent='';
+}
+function hideMergeJobsPanel(){const p=document.getElementById('mergeJobsPanel');if(p)p.classList.add('hidden')}
+function earlierDate(a,b){if(!a)return b||'';if(!b)return a||'';return a<b?a:b}
+function mergedEndDate(a,b){if(!a||!b)return '';return a>b?a:b}
+function executeMergeJobs(){
+  updateStateFromInputs();
+  const a=Number(document.getElementById('mergeJobA').value),b=Number(document.getElementById('mergeJobB').value),keep=Number(document.getElementById('mergeKeepJob').value);
+  if(!Number.isInteger(a)||!Number.isInteger(b)||a===b){alert('異なる2つのアルバイト先を選んでください。');return;}
+  if(keep!==a&&keep!==b){alert('残すアルバイト先名を選んでください。');return;}
+  const remove=keep===a?b:a, kj=state.jobs[keep], rj=state.jobs[remove];
+  if(!kj||!rj)return;
+  const keepName=String(kj.name||jobLabel(keep)).trim();
+  const removeName=String(rj.name||jobLabel(remove)).trim();
+  if(!confirm(`「${removeName}」を「${keepName}」に統合します。\n過去の勤務記録も「${keepName}」へ移します。\nよろしいですか？`))return;
+  kj.content=nonEmpty(kj.content)?kj.content:(rj.content||'');
+  kj.startDate=earlierDate(kj.startDate,rj.startDate);
+  kj.endDate=mergedEndDate(kj.endDate,rj.endDate);
+  kj.closeDay=nonEmpty(kj.closeDay)?kj.closeDay:(rj.closeDay||'');
+  const finalKeep=keep-(remove<keep?1:0);
+  Object.values(state.days||{}).forEach(day=>{
+    (day.works||[]).forEach(w=>{
+      normalizeWork(w);
+      if(w.jobIndex===null||w.jobIndex===undefined)return;
+      const ji=Number(w.jobIndex);
+      if(ji===remove||ji===keep)w.jobIndex=finalKeep;
+      else if(ji>remove)w.jobIndex=ji-1;
+    });
+  });
+  state.jobs.splice(remove,1);
+  save();render();hideMergeJobsPanel();
+  const msg=`統合しました：「${removeName}」→「${keepName}」`;
+  const st=document.getElementById('mergeJobsStatus');if(st)st.textContent=msg;
+  alert(msg);
+}
 function deleteJobMaster(index){if(!confirm('このアルバイト登録を削除します。過去の勤務記録は削除されません。'))return;state.jobs.splice(index,1);if(state.jobs.length===0)state.jobs.push({name:'',content:'',startDate:'',endDate:'',closeDay:''});save();renderJobs();renderDays();}
 function renderWeekLabel(){const a=state.currentWeekStart,b=weekEndFromStart(a),ad=parseDate(a),bd=parseDate(b);document.getElementById('weekLabel').textContent=`${ad.getFullYear()}/${ad.getMonth()+1}/${ad.getDate()}(${jpWeek[ad.getDay()]})〜${bd.getFullYear()}/${bd.getMonth()+1}/${bd.getDate()}(${jpWeek[bd.getDay()]})`}
 function visibleWorks(ds){const day=ensureDay(ds);const arr=[];day.works.forEach((w,i)=>{normalizeWork(w);const hasInput=nonEmpty(w.start)||nonEmpty(w.end)||Number(w.breakMin||0)>0||(w.jobIndex!==null&&w.jobIndex!==undefined)||w._manual;if(w.status==='work'||w.status==='none'||hasInput)arr.push({index:i,work:w,readOnly:(w.status==='work'&&w.jobIndex!==null&&!isJobActive(Number(w.jobIndex),ds))})});return arr;}
@@ -181,12 +248,14 @@ function buildWorkbook(a,b){
 
   // 勤務記録シート
   const data=[['日付','曜日','アルバイト番号','アルバイト名','アルバイト内容','状態','開始','終了','休み時間分','労働時間','直近7日間合計','上限','判定']];
-  rowsForExcel(a,b).forEach(r=>data.push([r.date,r.week,r.jobNo,r.name,r.content||'',r.statusJa,r.start,r.end,r.breakMin,r.status==='work'?Number(r.hours.toFixed(1)):(r.status==='none'?0:''),Number(r.sum7.toFixed(1)),r.limit,r.judge]));
+  rowsForExcel(a,b).forEach(r=>data.push([r.date,r.week,r.jobNo,r.name,r.content||'',r.statusJa,r.start,r.end,r.breakMin,r.status==='work'?r.hours:(r.status==='none'?0:''),Number(r.sum7.toFixed(1)),r.limit,r.judge]));
   const ws=XLSX.utils.aoa_to_sheet(data);
   ws['!cols']=[{wch:12},{wch:5},{wch:12},{wch:20},{wch:24},{wch:8},{wch:8},{wch:8},{wch:12},{wch:10},{wch:14},{wch:8},{wch:8}];
   const headerStyle={font:{bold:true,color:{rgb:'FFFFFF'}},fill:{fgColor:{rgb:'6B6259'}},alignment:{horizontal:'center'}};
   for(let c=0;c<data[0].length;c++){const cell=ws[XLSX.utils.encode_cell({r:0,c})];if(cell)cell.s=headerStyle}
   for(let r=1;r<data.length;r++){const j=data[r][12],fill=j==='超過'?'FFC7CE':(j==='注意'?'FFEB9C':'FFFFFF');for(let c=0;c<data[0].length;c++){const cell=ws[XLSX.utils.encode_cell({r,c})];if(cell)cell.s={fill:{fgColor:{rgb:fill}},border:{top:{style:'thin',color:{rgb:'DDDDDD'}},bottom:{style:'thin',color:{rgb:'DDDDDD'}},left:{style:'thin',color:{rgb:'DDDDDD'}},right:{style:'thin',color:{rgb:'DDDDDD'}}}}}}
+  // 労働時間は内部の元値を保持し、Excel上の表示だけ小数第1位にする
+  for(let r=1;r<data.length;r++){const cell=ws[XLSX.utils.encode_cell({r,c:9})];if(cell&&cell.t==='n')cell.z='0.0'}
   applyJapaneseExcelStyle(ws);
   XLSX.utils.book_append_sheet(wb,ws,'勤務記録');
   return wb
@@ -501,13 +570,14 @@ async function importExcelFile(file){
 
     // アルバイト情報
     const jobRows=sheetRows(wb,'アルバイト情報');
-    const jh=findHeaderRow(jobRows,['アルバイト番号','アルバイト名']);
+    const jh=findHeaderRow(jobRows,['アルバイト名']);
     if(jh>=0){
       const cm=colMap(jobRows[jh]);
       for(let r=jh+1;r<jobRows.length;r++){
         const row=jobRows[r];
-        const no=Number(row[cm['アルバイト番号']]);
-        const idx=Number.isFinite(no)&&no>0?no-1:findOrCreateJobByName(row[cm['アルバイト名']]);
+        // Excel側のアルバイト番号は、データ消去後に再登録された現在側の番号と一致する保証がない。
+        // 必ずアルバイト名で照合し、同名がなければ旧勤務先を新しい枠として追加する。
+        const idx=findOrCreateJobByName(row[cm['アルバイト名']]);
         mergeImportedJob(idx,{name:row[cm['アルバイト名']]||'',content:row[cm['アルバイト内容']]||'',startDate:excelDateToIso(row[cm['勤務開始日']]),endDate:excelDateToIso(row[cm['勤務終了日']]),closeDay:row[cm['締め日']]||''},counter);
       }
     }
@@ -537,9 +607,9 @@ async function importExcelFile(file){
         continue;
       }
       if(st==='work'){
-        let jobIdx=null;
-        if(cm['アルバイト番号']!==undefined){const no=Number(row[cm['アルバイト番号']]); if(Number.isFinite(no)&&no>0)jobIdx=no-1;}
-        if(jobIdx===null||jobIdx<0||jobIdx>=20)jobIdx=findOrCreateJobByName(row[cm['アルバイト名']]);
+        // 勤務記録もアルバイト番号ではなくアルバイト名で対応付ける。
+        // これにより、旧Excelの『アルバイト1』が現在の別勤務先『アルバイト1』へ誤結合するのを防ぐ。
+        const jobIdx=findOrCreateJobByName(row[cm['アルバイト名']]);
         if(jobIdx===null||jobIdx===undefined)continue;
         mergeImportedJob(jobIdx,{name:row[cm['アルバイト名']]||'',content:row[cm['アルバイト内容']]||'',startDate:'',endDate:''},counter);
         const start=String(row[cm['開始']]??'').trim();
@@ -754,6 +824,11 @@ document.getElementById('sharePdfBtn').onclick=()=>sharePdf();
 document.getElementById('sampleDataBtn').onclick=()=>createSampleData();
 document.getElementById('importExcelBtn').onclick=()=>document.getElementById('importExcelInput').click();
 document.getElementById('importExcelInput').addEventListener('change',e=>importExcelFile(e.target.files[0]));
+document.getElementById('mergeJobsBtn').onclick=()=>showMergeJobsPanel();
+document.getElementById('mergeJobA').addEventListener('change',()=>refreshMergeJobSelectors());
+document.getElementById('mergeJobB').addEventListener('change',()=>refreshMergeJobSelectors());
+document.getElementById('executeMergeJobsBtn').onclick=()=>executeMergeJobs();
+document.getElementById('cancelMergeJobsBtn').onclick=()=>hideMergeJobsPanel();
 document.getElementById('resetDataBtn').onclick=()=>resetAllData();
 
 render();setTimeout(loadLimitsCsv,300);
